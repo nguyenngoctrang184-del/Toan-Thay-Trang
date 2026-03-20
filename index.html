@@ -3,23 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ngân Hàng Đề Thi - Thầy Tráng</title>
+    <title>Hệ Thống Ôn Thi - Thầy Tráng</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        .test-list { list-style: none; padding: 0; }
-        .test-item { margin: 15px 0; }
-        .test-link { display: block; padding: 15px 20px; background-color: #ecf0f1; color: #2980b9; text-decoration: none; font-size: 18px; font-weight: bold; border-radius: 5px; transition: all 0.3s ease; border-left: 5px solid #3498db; }
-        .test-link:hover { background-color: #3498db; color: white; transform: translateX(10px); }
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            margin: 0; padding: 0;
+            color: var(--text-main);
+        }
+        .header {
+            background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%);
+            color: white; padding: 40px 20px; text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .header h1 { margin: 0; font-size: 2.5em; }
+        .header p { margin-top: 10px; font-size: 1.1em; opacity: 0.9; }
+        
+        .container {
+            max-width: 1200px; margin: 40px auto; padding: 0 20px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #E5E7EB;
+            display: flex; flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            border-color: #A5B4FC;
+        }
+        
+        .card-title {
+            font-size: 1.25em; font-weight: 700; color: var(--primary);
+            margin: 0 0 15px 0; border-bottom: 2px solid #EEF2FF; padding-bottom: 10px;
+        }
+        
+        .stat-row {
+            display: flex; align-items: center; margin-bottom: 12px;
+            font-size: 0.95em; color: var(--text-muted);
+        }
+        .stat-row i { width: 24px; color: #8B5CF6; text-align: center; margin-right: 8px; font-size: 1.1em; }
+        .stat-value { font-weight: 600; color: var(--text-main); margin-left: auto; }
+        
+        .ky-luc-badge {
+            background: #FEF3C7; color: #D97706; padding: 4px 8px; 
+            border-radius: 6px; font-size: 0.9em; font-weight: bold;
+        }
+        
+        .btn-start {
+            margin-top: auto; padding: 12px;
+            background-color: var(--primary); color: white;
+            text-align: center; text-decoration: none;
+            border-radius: 8px; font-weight: 600; transition: background 0.2s;
+            display: block;
+        }
+        .btn-start:hover { background-color: var(--primary-hover); }
+        
+        .loading-bar {
+            text-align: center; padding: 20px; color: var(--text-muted); font-style: italic;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📚 NGÂN HÀNG ĐỀ THI TOÁN TƯƠNG TÁC</h1>
-        <ul class="test-list">
-            <li class="test-item"><a class="test-link" href="DE1_final - Copy_interactive.html">DE1 THPT YÊN MÔ B - NINH BÌNH</a></li>
-        </ul>
+
+    <div class="header">
+        <h1><i class="fas fa-graduation-cap"></i> NGÂN HÀNG ĐỀ THI TOÁN</h1>
+        <p>Giáo viên: Nguyễn Ngọc Tráng - THPT Đào Sơn Tây</p>
     </div>
+
+    <div class="container">
+        <div id="loading" class="loading-bar">
+            <i class="fas fa-spinner fa-spin"></i> Đang đồng bộ dữ liệu thống kê từ Máy chủ...
+        </div>
+        <div class="grid" id="test-grid">
+            </div>
+    </div>
+
+    <script>
+        // 1. Cấu hình
+        const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxUoVEDp-vTKSnstMcDyBqVXZfj0N1YL71NRsiK-pkZ4cQ6xhXb1NCRuSFMqfzcBs6klA/exec";
+        const tests = [
+            { fileName: 'DE1_final - Copy_interactive.html', displayName: 'DE1 final - Copy', date: '20/03/2026' }
+        ];
+
+        // 2. Render giao diện ban đầu (Lúc chưa tải xong thống kê)
+        const grid = document.getElementById('test-grid');
+        tests.forEach(test => {
+            const safeId = test.fileName.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3 class="card-title">${test.displayName}</h3>
+                
+                <div class="stat-row">
+                    <i class="far fa-calendar-alt"></i> Ngày đăng:
+                    <span class="stat-value">${test.date}</span>
+                </div>
+                
+                <div class="stat-row">
+                    <i class="fas fa-users"></i> Lượt làm bài:
+                    <span class="stat-value" id="luot_${safeId}">...</span>
+                </div>
+                
+                <div class="stat-row" style="margin-bottom: 20px;">
+                    <i class="fas fa-trophy"></i> Kỷ lục:
+                    <span class="stat-value ky-luc-badge" id="kyluc_${safeId}">...</span>
+                </div>
+                
+                <a href="${test.fileName}" class="btn-start"><i class="fas fa-pen"></i> BẮT ĐẦU LÀM BÀI</a>
+            `;
+            grid.appendChild(card);
+        });
+
+        // 3. Gọi Google Sheets để lấy Thống kê
+        async function fetchStats() {
+            try {
+                const response = await fetch(GOOGLE_SHEET_URL);
+                const json = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+
+                if (json.result === 'success') {
+                    const data = json.data; // Toàn bộ bảng điểm từ Sheet1
+                    
+                    // Gom nhóm điểm theo Tên Đề
+                    let statsMap = {};
+                    
+                    data.forEach(row => {
+                        const tenDe = row['TenDe'] || row['Tên Đề'] || ''; 
+                        const diem = parseFloat(row['DiemSo']) || 0;
+                        const hoTen = row['HoTen'] || 'Ẩn danh';
+                        
+                        if (tenDe) {
+                            if (!statsMap[tenDe]) {
+                                statsMap[tenDe] = { count: 0, topScore: -1, topName: '' };
+                            }
+                            statsMap[tenDe].count++; // Cộng thêm 1 lượt thi
+                            
+                            // Tìm kỷ lục gia
+                            if (diem > statsMap[tenDe].topScore) {
+                                statsMap[tenDe].topScore = diem;
+                                statsMap[tenDe].topName = hoTen;
+                            }
+                        }
+                    });
+
+                    // Cập nhật số liệu vào đúng thẻ HTML
+                    tests.forEach(test => {
+                        const safeId = test.fileName.replace(/[^a-zA-Z0-9]/g, '_');
+                        
+                        // Tìm thống kê cho đề này (so sánh gần đúng)
+                        let stat = statsMap[test.displayName];
+                        if (!stat) {
+                            const key = Object.keys(statsMap).find(k => k.includes(test.displayName) || test.displayName.includes(k));
+                            if (key) stat = statsMap[key];
+                        }
+
+                        const spanLuot = document.getElementById('luot_' + safeId);
+                        const spanKyLuc = document.getElementById('kyluc_' + safeId);
+
+                        if (stat) {
+                            spanLuot.innerText = stat.count + " lượt";
+                            // Lấy chữ đầu tiên của Tên cho gọn (VD: Nguyễn Văn A -> Nguyễn)
+                            let shortName = stat.topName.split(' ')[stat.topName.split(' ').length - 1] || stat.topName;
+                            spanKyLuc.innerText = stat.topScore + "đ (" + shortName + ")"; 
+                        } else {
+                            spanLuot.innerText = "0 lượt";
+                            spanKyLuc.innerText = "Chưa có";
+                            spanKyLuc.style.background = "#F3F4F6";
+                            spanKyLuc.style.color = "#9CA3AF";
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error("Lỗi lấy thống kê:", error);
+                document.getElementById('loading').innerHTML = '<span style="color:red">Không thể tải thống kê lúc này.</span>';
+                tests.forEach(test => {
+                    const safeId = test.fileName.replace(/[^a-zA-Z0-9]/g, '_');
+                    document.getElementById('luot_' + safeId).innerText = "---";
+                    document.getElementById('kyluc_' + safeId).innerText = "---";
+                });
+            }
+        }
+
+        // Kích hoạt lấy dữ liệu ngầm
+        fetchStats();
+    </script>
 </body>
 </html>
