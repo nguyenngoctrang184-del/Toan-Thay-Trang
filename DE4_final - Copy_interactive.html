@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>THPT - LIÊN CẤP ĐẠI HỌC HỒNG ĐỨC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style type="text/css">
+        .bgclr {background-color: white; color: blue; font-weight: bold; resize: none;}
+        .rchc {background-color: #04AA6D;}
+        .correct-mc-choice { color: #04AA6D; font-weight: bold; }
+        .correct-tf-choice { color: #04AA6D; font-weight: bold; }
+    </style>
+    <style>
+        .btnNopBaiCSS{ border-color:teal; border-radius: 5px; color: white; background-color: teal; padding: 5px; margin: 3px 0px 0px 3px; width: 5em; }
+        .btnCauCSS{ border-radius: 4px; color: white; background-color: #2C3E50; padding: 5px; margin: 0px 2px 0px 2px; width: 5em; }
+        .btnCtrlCSS{ border-radius: 4px; background-color: DarkViolet; color: white; padding: 5px; }
+        .btnMarkCSS{ border-radius: 2px; background-color: Peru; color: white; padding: 2px; margin: 3px 0px 0px 1em; }
+        .lbPageCSS{ border-radius: 4px; color: white; background-color: #F1C40F; padding: 6px; vertical-align: middle; margin: 0px 3px 0px 3px; }
+        
+        
+        .cauhoi {
+            width:100%; border-style: solid; border-radius: 7px;
+            border-width: 4px; border-left: 15px solid #E0E0E0;
+            border-color: #E0E0E0; background-color: #FFFFFF;
+            padding: 5px; margin-bottom: 15px; box-sizing: border-box; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        .loigiai {
+             background-color: #FFFFFF; color: #000000;
+             margin-top: 10px; padding: 10px; border-top: 1px dashed #000000;
+        }
+        .question-text { color: #0000FF; }
+        .option-letter { color: #008000; }
+        .option-letter-tf { color: #008000; margin-right: 5px; } 
+        .option-text { color: #6A0DAD; }
+        .title-text { color: #FF0000; }
+        
+        input[type=radio] { border: 0px; width: 2em; height: 2em; margin: 0px 5px 0px 0px; vertical-align: middle; }
+        table.td, th.td, td.td { border: 0px; text-align: center; background-color: rgba(0, 0, 0, 0); }
+        table, th, td { margin: 7px; border: 1px solid #FFFFFF; border-collapse: collapse; background-color: #D3D3D3; padding: 5px 10px; }
+        body { font-family: 'Times New Roman', serif; margin: 10px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML' type='text/javascript'></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+          jax: ["input/TeX", "output/HTML-CSS"],
+          tex2jax: {
+            inlineMath: [['$','$'], ["\\(","\\)"]],
+            displayMath: [['$$','$$'], ["\\[","\\]"]],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+          },
+          "HTML-CSS": {availableFonts: ["TeX"]},
+          TeX: {
+            Macros: {
+              hoac: ["\\left[\\begin{aligned}#1\\end{aligned}\\right.", 1],
+              heva: ["\\left\\{\\begin{aligned}#1\\end{aligned}\\right.", 1]
+            }
+          }
+        });
+    </script>
+</head>
+
+<body>
+<p>
+<label><b>Họ và tên</b></label>&nbsp;&nbsp;<input type='text' id='nameField' placeholder='Họ và tên' required>&nbsp;&nbsp;
+<label><b>Lớp</b></label>&nbsp;<input type='text' id='lopField' size='3' placeholder='Lớp' required>&nbsp;&nbsp;
+</p>
+
+    <p style="text-align: left; margin-top: 20px; margin-left: 10px;">
+        <button type="button" id="btnStartQuiz" class="btnNopBaiCSS" style="padding: 8px 18px; font-size: 1.05em; white-space: nowrap;width: auto;" disabled>Bắt đầu làm bài</button>
+    </p>
+    
+<div id='quiz-main-content' style='display: none;'>
+<div id="quiz-timer-bar" style="background-color: #f1f1f1; padding: 10px; border-bottom: 1px solid #ccc; margin-bottom: 15px; display: none;"> <font color="red">Thời gian làm bài: </font> <span style="color: red; font-weight: bold; font-size: 1.05em;" class="timer" id="thoigian">--:--</span> </div>
+<div id='question-nav-container' style='border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 20px;'> <h4 style='margin-top: 0; margin-bottom: 10px;'>Danh sách câu</h4> <div id='question-nav' style='display: flex; flex-wrap: wrap; gap: 8px;'></div> </div>
+<div id='question-display-area'>
+<div id='quiz-container'>
+<div class='cauhoi' id='QuestID1' data-qtype='mc' data-original-id='q1'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 1</span>.</b> Họ nghiệm của phương trình ${\text{sin}}3x = \dfrac{1}{2}$ là:</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q1' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\hoac{ x & = \dfrac{\pi }{18} + \dfrac{k2\pi }{3} \\ x & = \dfrac{5\pi }{18} + \dfrac{k2\pi }{3} }$</font>
+                    <span id='check1A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q1' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\hoac{ x & = \dfrac{\pi }{6} + \dfrac{k2\pi }{3} \\ x & = \dfrac{\pi }{12} + \dfrac{k2\pi }{3} }$</font>
+                    <span id='check1B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q1' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\hoac{ x & = \dfrac{\pi }{18} + k2\pi \\ x & = - \dfrac{\pi }{18} + k2\pi }$</font>
+                    <span id='check1C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q1' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\hoac{ x & = \dfrac{\pi }{6} + \dfrac{k2\pi }{3} \\ x & = \dfrac{5\pi }{6} + \dfrac{k2\pi }{3} }$</font>
+                    <span id='check1D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc1' onclick='toggleSolution("q1")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc1' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 1</span>:</b><br>
+                        ${\text{sin}}3x = \dfrac{1}{2} \Leftrightarrow {\text{sin}}3x = \sin \dfrac{\pi }{6} \Leftrightarrow \hoac{ 3x & = \dfrac{\pi }{6} + k2\pi \\ 3x & = \pi - \dfrac{\pi }{6} + k2\pi } \Leftrightarrow \hoac{ x & = \dfrac{\pi }{18} + \dfrac{k2\pi }{3} \\ x & = \dfrac{5\pi }{18} + \dfrac{k2\pi }{3} }$
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID2' data-qtype='mc' data-original-id='q2'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 2</span>.</b> Tập xác định của hàm số $y = {(x + 2)^{2021}}$ là:</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q2' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$D = \left( - \infty ;0 \right)$</font>
+                    <span id='check2A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q2' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$D = \left( 0; + \infty \right)$</font>
+                    <span id='check2B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q2' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$D = \mathbb{R}$</font>
+                    <span id='check2C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q2' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$D = \left[ {0; + \infty } \right)$</font>
+                    <span id='check2D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc2' onclick='toggleSolution("q2")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc2' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 2</span>:</b><br>
+                        Hàm số có nghĩa với mọi $x \in \mathbb{R}$ .<br>			Tập xác định  $D = \mathbb{R}$
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID3' data-qtype='mc' data-original-id='q3'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 3</span>.</b> Giới hạn $\mathop {\lim }\limits_{x \to + \infty } \dfrac{2x}{{x^2}+1}$ bằng</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q3' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$- \infty$</font>
+                    <span id='check3A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q3' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$0$</font>
+                    <span id='check3B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q3' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$1$</font>
+                    <span id='check3C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q3' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$2$</font>
+                    <span id='check3D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc3' onclick='toggleSolution("q3")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc3' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 3</span>:</b><br>
+                        Ta có $\mathop {\lim }\limits_{x \to + \infty } \dfrac{2x}{x^2+1} = \mathop {\lim }\limits_{x \to + \infty } \dfrac{\dfrac{2}{x}}{1 + \dfrac{1}{x^2}}$.<br>Vì $\mathop {\lim }\limits_{x \to + \infty } \dfrac{2}{x} = 0$ và $\mathop {\lim }\limits_{x \to + \infty } \dfrac{1}{x^2} = 0$, nên:<br>$\mathop {\lim }\limits_{x \to + \infty } \dfrac{\dfrac{2}{x}}{1 + \dfrac{1}{x^2}} = \dfrac{0}{1 + 0} = 0$.<br>Vậy giới hạn cần tìm bằng $0$.
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID4' data-qtype='mc' data-original-id='q4'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 4</span>.</b> Cho hình chóp $S.ABCD$ có đáy $ABCD$ là hình chữ nhật. Gọi $M,N$ theo thứ tự là trọng tâm $\Delta SAB; \Delta SCD$ . Khi đó $MN$ song song với mặt phẳng</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q4' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\left( SAC \right)$</font>
+                    <span id='check4A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q4' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\left( SBD \right)$</font>
+                    <span id='check4B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q4' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\left( SAB \right)$</font>
+                    <span id='check4C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q4' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\left( ABCD \right)$</font>
+                    <span id='check4D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc4' onclick='toggleSolution("q4")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc4' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 4</span>:</b><br>
+                        <p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084245/temp_images_de4-final-copy/hinh_13.png" alt="Hình ảnh hinh_13.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>			Ta có $MN {\text{// }}IJ$ , suy ra $MN{\text{//}}\left( ABCD \right)$ .
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID5' data-qtype='mc' data-original-id='q5'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 5</span>.</b> Tìm hiểu thời gian hoàn thành một bài tập (đơn vị: phút) của một số học sinh thu được kết quả sau:<br>		<p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084245/temp_images_de4-final-copy/hinh_12.png" alt="Hình ảnh hinh_12.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>		Thời gian trung bình (phút) để hoàn thành bài tập của các em học sinh là</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q5' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$7$</font>
+                    <span id='check5A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q5' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$11,3$</font>
+                    <span id='check5B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q5' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$10,4$</font>
+                    <span id='check5C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q5' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$12,5$</font>
+                    <span id='check5D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc5' onclick='toggleSolution("q5")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc5' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 5</span>:</b><br>
+                        Ta có $\overline x = \dfrac{2.2 + 6.4 + 10.7 + 14.4 + 18.3}{20} = 10,4$ .
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID6' data-qtype='mc' data-original-id='q6'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 6</span>.</b> Cho  $A,B$ là hai biến cố xung khắc. Biết $P(A) = \dfrac{1}{3},P(B) = \dfrac{1}{4}$ Tính $P(A \cup B)$</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q6' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\dfrac{7}{12}$</font>
+                    <span id='check6A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q6' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\dfrac{1}{12}$</font>
+                    <span id='check6B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q6' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\dfrac{1}{7}$</font>
+                    <span id='check6C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q6' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\dfrac{1}{2}$</font>
+                    <span id='check6D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc6' onclick='toggleSolution("q6")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc6' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 6</span>:</b><br>
+                        Vì $A,B$ là hai biến cố xung khắc, nên $P(A \cup B) = P(A) + P(B) = \dfrac{1}{3} + \dfrac{1}{4} = \dfrac{7}{12}$ .
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID7' data-qtype='mc' data-original-id='q7'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 7</span>.</b> Cho hàm số  $y = f(x)$ có bảng biến thiên như sau:<br>		<p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084243/temp_images_de4-final-copy/hinh_11.png" alt="Hình ảnh hinh_11.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>		Hàm số đã cho nghịch biến trên khoảng nào dưới đây?</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q7' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$( - 1;0)$</font>
+                    <span id='check7A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q7' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\left( - \infty ;0 \right)$</font>
+                    <span id='check7B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q7' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\left( 1; + \infty \right)$</font>
+                    <span id='check7C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q7' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\left( 0;1 \right)$</font>
+                    <span id='check7D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc7' onclick='toggleSolution("q7")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc7' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 7</span>:</b><br>
+                        Dựa vào bảng biến thiên, ta thấy $f'(x) &lt; 0$ trên các khoảng $(-\infty; -1)$ và $(0; 1)$.<br>Suy ra hàm số đã cho nghịch biến trên các khoảng $(-\infty; -1)$ và $(0; 1)$.<br>Đối chiếu với các đáp án, ta thấy khoảng $(0; 1)$ thỏa mãn yêu cầu bài toán.
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID8' data-qtype='mc' data-original-id='q8'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 8</span>.</b> Dãy số nào trong các dãy số dưới đây là một cấp số cộng?</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q8' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$1;5;10;15;20$</font>
+                    <span id='check8A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q8' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$1;4;7;10;13$</font>
+                    <span id='check8B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q8' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$6;6;6;6;7$</font>
+                    <span id='check8C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q8' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$3;6;9;12;13$</font>
+                    <span id='check8D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc8' onclick='toggleSolution("q8")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc8' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 8</span>:</b><br>
+                        Cấp số cộng là một dãy số (hữu hạn hoặc vô hạn), trong đó kể từ số hạng thứ hai, mỗi số hạng đều bằng số hạng đứng ngay trước nó cộng với một số không đổi $d$ (gọi là công sai). Nghĩa là $u_{n+1} - u_n = d$ với mọi $n \ge 1$.<br>Xét dãy số $1; 4; 7; 10; 13$, ta có:<br>$4 - 1 = 3$;<br>			$7 - 4 = 3$;<br>			$10 - 7 = 3$;<br>			$13 - 10 = 3$;<br>			<br>Vì hiệu giữa hai số hạng liên tiếp luôn bằng một hằng số ($d = 3$) nên đây là một cấp số cộng. <br>Các dãy số ở các phương án khác đều có hiệu các số hạng liên tiếp không bằng nhau nên không phải là cấp số cộng.
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID9' data-qtype='mc' data-original-id='q9'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 9</span>.</b> Cho hàm số $f\left( x \right)$ có đồ thị như hình bên. Giá trị lớn nhất của hàm số $f\left( x \right)$ trên đoạn $\left[ - 3;2 \right]$ đạt tại $x$ bằng<br>		<p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084242/temp_images_de4-final-copy/hinh_10.png" alt="Hình ảnh hinh_10.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p></font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q9' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$4$</font>
+                    <span id='check9A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q9' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$2$</font>
+                    <span id='check9B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q9' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$-3$</font>
+                    <span id='check9C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q9' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$0$</font>
+                    <span id='check9D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc9' onclick='toggleSolution("q9")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc9' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 9</span>:</b><br>
+                        Quan sát đồ thị ta thấy giá trị lớn nhất của hàm số $f\left( x \right)$ trên đoạn $\left[ - 3;2 \right]$ đạt tại $x$ bằng $-3$ .
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID10' data-qtype='mc' data-original-id='q10'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 10</span>.</b> Tiệm cận đứng của đồ thị hàm số $y = \dfrac{2x + 4}{x - 1}$ là</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q10' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$x = 1$</font>
+                    <span id='check10A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q10' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$x = - 1$</font>
+                    <span id='check10B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q10' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$x = 2$</font>
+                    <span id='check10C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q10' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$x = - 2$</font>
+                    <span id='check10D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc10' onclick='toggleSolution("q10")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc10' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 10</span>:</b><br>
+                        $\mathop {\lim }\limits_{x \to \pm 1} \dfrac{2x + 4}{x - 1} = \pm \infty$ nên $x = 1$ là tiệm cận đứng của đồ thị hàm số.
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID11' data-qtype='mc' data-original-id='q11'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 11</span>.</b> Hàm số nào dưới đây có đồ thị như đường cong trong hình bên?<br>		<p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084251/temp_images_de4-final-copy/hinh_9.png" alt="Hình ảnh hinh_9.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p></font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q11' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$y = \dfrac{x^2 - 2x + 3}{x - 1}$</font>
+                    <span id='check11A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q11' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$y = \dfrac{x + 1}{x - 1}$</font>
+                    <span id='check11B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q11' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$y = x^3 - 3x - 1$</font>
+                    <span id='check11C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q11' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$y = x^2 + x - 1$</font>
+                    <span id='check11D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc11' onclick='toggleSolution("q11")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc11' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 11</span>:</b><br>
+                        Đây là hình ảnh đồ thị của hàm bậc $3$ nên
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID12' data-qtype='mc' data-original-id='q12'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 12</span>.</b> Cho hình lập phương $ABCD.A'B'C'D'$ có độ dài mỗi cạnh bằng 1. Tính độ dài của $\overrightarrow {AB} + \overrightarrow {CC'}$</font></p>
+<div class='options'>
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q12' value='A'>
+                    <font class="option-letter" color='#008000'><b>A.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\sqrt 3$</font>
+                    <span id='check12A' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q12' value='B'>
+                    <font class="option-letter" color='#008000'><b>B.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$\sqrt 2$</font>
+                    <span id='check12B' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q12' value='C'>
+                    <font class="option-letter" color='#008000'><b>C.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$1$</font>
+                    <span id='check12C' class='check-mark'></span>
+                </label>
+                
+
+                <label style='display: block; margin-bottom: 5px;' class='mc-option-item'>
+                    <input type='radio' name='q12' value='D'>
+                    <font class="option-letter" color='#008000'><b>D.</b></font>
+                    <font class="option-text" color='#6A0DAD'>$2$</font>
+                    <span id='check12D' class='check-mark'></span>
+                </label>
+                
+</div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc12' onclick='toggleSolution("q12")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc12' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 12</span>:</b><br>
+                        <p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084250/temp_images_de4-final-copy/hinh_8.png" alt="Hình ảnh hinh_8.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>			$\left| \overrightarrow {AB} + \overrightarrow {CC'} \right| = \left| \overrightarrow {AB} + \overrightarrow {AA'} \right| = \left| \overrightarrow {AB'} \right| = AB' = \sqrt 2$
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID13' data-qtype='tf' data-original-id='q13'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 13</span>.</b> Cho hình chóp $S.ABC$ có mặt bên $\left( SAB \right)$ vuông góc với mặt đáy và tam giác $SAB$ đều cạnh $2a$ . Lấy $H$ là trung điểm của $AB$ . Biết tam giác $ABC$ vuông tại $C$ và cạnh $AC = a\sqrt 3$ . Khi đó:</font></p>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc13' onclick='toggleSolution("q13")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc13' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 13</span>:</b><br>
+                        <p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084249/temp_images_de4-final-copy/hinh_7.png" alt="Hình ảnh hinh_7.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>
+                    </font>
+                </div>
+                
+<div class='options_tf' style='margin-top: 10px;'>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>a)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            $SH \bot \left( ABC \right)$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q13a' value='D'> Đúng</label>
+                    <label><input type='radio' name='q13a' value='S'> Sai</label>
+                    <span id='check13a' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc13a' onclick='toggleItemSolution("lgc13a", "btlgc13a")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc13a' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Đúng:Trong tam giác đều $SAB$ , $SH$ là đường cao. Do đó $SH \bot AB$ <br>Theo giả thiết mặt bên $(SAB) \bot (ABC)$ , $(SAB) \cap (ABC) = AB$ , $SH \subset (SAB)$ nên $SH \bot (ABC)$</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>b)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            $\left( SHC \right) \bot \left( SAC \right)$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q13b' value='D'> Đúng</label>
+                    <label><input type='radio' name='q13b' value='S'> Sai</label>
+                    <span id='check13b' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc13b' onclick='toggleItemSolution("lgc13b", "btlgc13b")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc13b' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Sai: Giả sử $\left( SHC \right) \bot \left( SAC \right)$ .<br>Kẻ $HK \bot SC$ tại $K$ . Vì $(SHC) \cap (SAC) = SC$ và $HK \subset (SHC)$ nên $HK \bot (SAC)$ , suy ra $HK \bot AC$ .<br>Hơn nữa vì $SH \bot (ABC)$ nên $SH \bot AC$ . Suy ra $AC \bot (SHC)$ , suy ra $AC \bot HC$ : điều này vô lý vì tam giác $ABC$ vuông tại $C$ .<br>Vậy $\left( SHC \right)$ không vuông góc với $\left( SAC \right)$</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>c)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            $d\left( C,\left( SAB \right) \right) = \dfrac{a\sqrt 3 }{3}$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q13c' value='D'> Đúng</label>
+                    <label><input type='radio' name='q13c' value='S'> Sai</label>
+                    <span id='check13c' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc13c' onclick='toggleItemSolution("lgc13c", "btlgc13c")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc13c' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Sai: $(SAB) \bot (ABC)$ nên $d(C,(SAB)) = d(C,AB) = \dfrac{AC.BC}{AB} = \dfrac{a\sqrt 3 .\sqrt{4a^2 - 3a^2}}{2a} = \dfrac{a\sqrt 3 }{2}.$</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>d)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Thể tích của khối chóp $S.ABC$  bằng $\dfrac{a^3}{6}$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q13d' value='D'> Đúng</label>
+                    <label><input type='radio' name='q13d' value='S'> Sai</label>
+                    <span id='check13d' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc13d' onclick='toggleItemSolution("lgc13d", "btlgc13d")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc13d' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Sai: Thể tích của khối chóp $S.ABC$ là<br>$V = \dfrac{1}{3}.{S_{\Delta ABC}}.SH = \dfrac{1}{3}.\dfrac{1}{2}.CA.CB.\dfrac{AB\sqrt 3 }{2} = \dfrac{a^3}{2}$ .</font>
+                    </div>
+                    
+</div>
+</div>
+</div>
+<div class='cauhoi' id='QuestID14' data-qtype='tf' data-original-id='q14'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 14</span>.</b> Cho hàm số $y = f(x) = x^3 - 3x$ . Khi đó:</font></p>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc14' onclick='toggleSolution("q14")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc14' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 14</span>:</b><br>
+                        $\begin{aligned} y' & = f'(x) = 3x^2 - 3 \\ y' & = 0 \Leftrightarrow x = \pm 1 \end{aligned}$<br>Bảng biến thiên<br><p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084249/temp_images_de4-final-copy/hinh_7.png" alt="Hình ảnh hinh_7.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>
+                    </font>
+                </div>
+                
+<div class='options_tf' style='margin-top: 10px;'>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>a)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Hàm số đồng biến trên khoảng $( - 1;1)$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q14a' value='D'> Đúng</label>
+                    <label><input type='radio' name='q14a' value='S'> Sai</label>
+                    <span id='check14a' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc14a' onclick='toggleItemSolution("lgc14a", "btlgc14a")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc14a' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Từ bảng biến thiên suy ra hàm số nghịch biến trên khoảng $( - 1;1)$ <br>sai</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>b)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Hàm số có $2$ điểm cực trị
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q14b' value='D'> Đúng</label>
+                    <label><input type='radio' name='q14b' value='S'> Sai</label>
+                    <span id='check14b' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc14b' onclick='toggleItemSolution("lgc14b", "btlgc14b")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc14b' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Từ bảng biến thiên suy ra hàm số có $2$ điểm cực trị.<br>đúng.</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>c)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Giá trị lớn nhất của hàm số $y = f(x) + 2$ trên đoạn $[0;2]$ bằng $4$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q14c' value='D'> Đúng</label>
+                    <label><input type='radio' name='q14c' value='S'> Sai</label>
+                    <span id='check14c' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc14c' onclick='toggleItemSolution("lgc14c", "btlgc14c")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc14c' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Ta có $f(0) = 0, f(2) = 2 \Rightarrow \mathop {\max }\limits_{[0;2]} f(x) = 2 \Rightarrow \mathop {\max }\limits_{[0;2]} (f(x) + 2) = 4$ <br>đúng.</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>d)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Có duy nhất một giá trị của tham số thực $m$ sao cho giá trị lớn nhất của hàm số $y = \left| f(x) + m \right|$ trên đoạn $[0;2]$ bằng $3$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q14d' value='D'> Đúng</label>
+                    <label><input type='radio' name='q14d' value='S'> Sai</label>
+                    <span id='check14d' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc14d' onclick='toggleItemSolution("lgc14d", "btlgc14d")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc14d' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Ta có $\mathop {\max }\limits_{[0;2]} f(x) = 2, \mathop {\min }\limits_{[0;2]} f(x) = - 2 \Rightarrow \mathop {\max }\limits_{[0;2]} (f(x) + m) = 2 + m, \mathop {\min }\limits_{[0;2]} (f(x) + m) = - 2 + m$ .<br>$\mathop {\max }\limits_{[0;2]} (\left| f(x) + m \right|) = \max (\left| - 2 + m \right|,\left| 2 + m \right|)$<br>* Nếu $\left| - 2 + m \right| = 3 \Rightarrow \hoac{ m & = 5 \\ m & = - 1 }$<br>+ Với $m = 5 \Rightarrow \left| 2 + m \right| = 7 \Rightarrow \mathop {\max }\limits_{[0;2]} (\left| f(x) + m \right|) = 7$ nên loại $m = 5$ <br>+ Với $m = - 1 \Rightarrow \left| 2 + m \right| = 1 &lt; 3 \Rightarrow \mathop {\max }\limits_{[0;2]} (\left| f(x) + m \right|) = 3$ nên $m = - 1$ thoả mãn<br>* Nếu $\left| 2 + m \right| = 3 \Rightarrow \hoac{ m & = 1 \\ m & = - 5 }$ .<br>+ Với $m = 1 \Rightarrow \mathop {\max }\limits_{[0;2]} (\left| f(x) + m \right|) = 3$ nên $m = 1$ thỏa mãn.<br>+ Với $m = - 5 \Rightarrow \mathop {\max }\limits_{[0;2]} (\left| f(x) + m \right|) = 7$ nên loại $m = - 5$ <br>Vậy $m = \pm 1$ thì giá trị lớn nhất của hàm số $y = \left| f(x) + m \right|$ trên đoạn $[0;2]$ bằng $3$ .<br>sai</font>
+                    </div>
+                    
+</div>
+</div>
+</div>
+<div class='cauhoi' id='QuestID15' data-qtype='tf' data-original-id='q15'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 15</span>.</b> Cho hàm số $y = f\left( x \right) = \dfrac{x^2 - x + 2}{x - 2}$ có đồ thị $\left( C \right)$ .</font></p>
+<div class='options_tf' style='margin-top: 10px;'>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>a)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Tiệm cận đứng của đồ thị $\left( C \right)$ là $x = 2$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q15a' value='D'> Đúng</label>
+                    <label><input type='radio' name='q15a' value='S'> Sai</label>
+                    <span id='check15a' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc15a' onclick='toggleItemSolution("lgc15a", "btlgc15a")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc15a' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Ta có $\mathop {\lim }\limits_{x \to {2^ - }} \dfrac{x^2 - x + 2}{x - 2} = - \infty ;\mathop {\lim }\limits_{x \to {2^ + }} \dfrac{x^2 - x + 2}{x - 2} = + \infty$ <br>Do đó, đồ thị $\left( C \right)$ có tiệm cận đứng là $x = 2$ .<br>Vậy  Đúng</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>b)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Hàm số đồng biến trên $\left( 0;2 \right)$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q15b' value='D'> Đúng</label>
+                    <label><input type='radio' name='q15b' value='S'> Sai</label>
+                    <span id='check15b' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc15b' onclick='toggleItemSolution("lgc15b", "btlgc15b")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc15b' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Ta có $y' = \dfrac{x^2 - 4x}{{\left ( x - 2 \right )}^2}$ ; $y' = 0 \Leftrightarrow \hoac{ x & = 0 \\ x & = 4 }$<br>BBT<br>				<p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084249/temp_images_de4-final-copy/hinh_6.png" alt="Hình ảnh hinh_6.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>				Hàm số nghịch biến trên khoảng $\left( 0;2 \right)$ .<br>Vậy  Sai</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>c)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Đường thẳng $y = x + 1$ là tiệm cận xiên của đồ thị $\left( C \right)$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q15c' value='D'> Đúng</label>
+                    <label><input type='radio' name='q15c' value='S'> Sai</label>
+                    <span id='check15c' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc15c' onclick='toggleItemSolution("lgc15c", "btlgc15c")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc15c' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Ta có $y = x + 1 + \dfrac{4}{x - 2}$  $\Rightarrow \mathop {\lim }\limits_{x \to \pm \infty } \left[ y - \left( x + 1 \right) \right] = \mathop {\lim }\limits_{x \to \pm \infty } \dfrac{4}{x - 2} = 0$ <br>Suy ra đồ thị $\left( C \right)$ có tiệm cận xiên $y = x + 1$ .<br>Vậy  Đúng</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>d)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Có $2024$ giá trị nguyên của $m \in \left[ 0;2025 \right]$ để đường thẳng $y = m$ cắt đồ thị $\left( C \right)$ tại hai điểm phân biệt
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q15d' value='D'> Đúng</label>
+                    <label><input type='radio' name='q15d' value='S'> Sai</label>
+                    <span id='check15d' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc15d' onclick='toggleItemSolution("lgc15d", "btlgc15d")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc15d' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Từ BBT, $y = m$ cắt đồ thị $\left( C \right)$ tại hai điểm phân biệt khi $\hoac{ m & &lt; - 1 \\ m & &gt; 7 }$ .<br>				Với $m$ nguyên và $m \in \left[ 0;2025 \right]$  $\Rightarrow m \in \left\{ 8;9;10;...;2025 \right\} \Rightarrow$ Có $2018$ số.<br>Vậy  Sai</font>
+                    </div>
+                    
+</div>
+</div>
+</div>
+<div class='cauhoi' id='QuestID16' data-qtype='tf' data-original-id='q16'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 16</span>.</b> Số dân của một thị trấn sau $t$ năm kể từ năm $1970$ được ước tính bởi công thức $f\left( t \right) = \dfrac{26t + 10}{t + 5}$ ( $f\left( t \right)$ được tính bằng nghìn người).</font></p>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc16' onclick='toggleSolution("q16")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc16' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 16</span>:</b><br>
+                        Hàm số dân số là $f\left( t \right) = \dfrac{26t + 10}{t + 5}$ (nghìn người).<br>
+                    </font>
+                </div>
+                
+<div class='options_tf' style='margin-top: 10px;'>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>a)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Số dân của thị trấn vào đầu năm $1980$ là $18$ nghìn người
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q16a' value='D'> Đúng</label>
+                    <label><input type='radio' name='q16a' value='S'> Sai</label>
+                    <span id='check16a' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc16a' onclick='toggleItemSolution("lgc16a", "btlgc16a")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc16a' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Số dân vào đầu năm $1980$ <br>Thời gian $t$ tính từ năm $1970$ .<br>Năm $1980$ ứng với $t = 1980 - 1970 = 10$ (năm).<br>$f\left( 10 \right) = \dfrac{26 \cdot 10 + 10}{10 + 5} = 18$<br>Vậy số dân vào đầu năm $1980$ là $18$ nghìn người. Khẳng định  đúng.</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>b)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Số dân của thị trấn vào đầu năm $1995$ là $23$ nghìn người
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q16b' value='D'> Đúng</label>
+                    <label><input type='radio' name='q16b' value='S'> Sai</label>
+                    <span id='check16b' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc16b' onclick='toggleItemSolution("lgc16b", "btlgc16b")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc16b' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Số dân vào đầu năm $1995$ <br>Thời gian $t$ tính từ năm $1970$ .<br>Năm $1995$ ứng với $t = 1995 - 1970 = 25$ (năm).<br>$f\left( 25 \right) = \dfrac{26 \cdot 25 + 10}{25 + 5} = 22$ .<br>Vậy số dân vào đầu năm $1995$ là $22$ nghìn người. Khẳng định  sai</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>c)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Xem $f$ là một hàm số xác định trên nửa khoảng $[0, + \infty )$ . Vậy hàm số đồng biến trên $[0, + \infty )$
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q16c' value='D'> Đúng</label>
+                    <label><input type='radio' name='q16c' value='S'> Sai</label>
+                    <span id='check16c' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc16c' onclick='toggleItemSolution("lgc16c", "btlgc16c")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc16c' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Xét tính đồng biến của hàm số $f\left( t \right) = \dfrac{26t + 10}{t + 5}$ .<br>$f'\left( t \right) = \dfrac{120}{{\left ( t + 5 \right )}^2} &gt; 0$ , với mọi $t \in [0, + \infty )$ <br>Vậy hàm số $f\left( t \right)$ đồng biến trên $[0, + \infty )$ . Khẳng định  đúng.</font>
+                    </div>
+                    
+</div>
+
+                <div style='margin-bottom: 8px; border: 1px solid #eee; padding: 8px; border-radius: 4px;' class='tf-option-item'>
+                    <p style='margin: 0 0 5px 0;'>
+                        <font class="option-letter-tf" color='#008000'>
+                            <b>d)</b>
+                        </font>
+                        <font class="option-text" color='#6A0DAD'>
+                            Đạo hàm của hàm số $f$ biểu thị tốc độ tăng dân số của thị trấn (tính bằng nghìn người/năm). Vào năm $1998$ thì tốc độ tăng dân số là $0,125$ nghìn người/năm
+                        </font>
+                    </p>
+                    <label style='margin-right: 15px;'><input type='radio' name='q16d' value='D'> Đúng</label>
+                    <label><input type='radio' name='q16d' value='S'> Sai</label>
+                    <span id='check16d' class='check-mark'></span>
+                
+
+                    <button type='button' class='btnCtrlCSS btn-xem-lg-cau-item' id='btlgc16d' onclick='toggleItemSolution("lgc16d", "btlgc16d")' style='margin-left: 15px; display: none; font-size: 0.8em; padding: 2px 5px;'>Xem giải thích</button>
+                    
+
+                    <div class='loigiai tf-solution-item' id='lgc16d' style='display:none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #000000; background-color: #FFFFFF;'>
+                        <font color='#000000'>Tốc độ tăng dân số vào năm $1998$ <br>Năm $1998$ ứng với $t = 1998 - 1970 = 28$ (năm).<br>$f'\left( 28 \right) = \dfrac{120}{{\left ( 28 + 5 \right )}^2} \approx 0,11019$ (nghìn người/năm).<br>Khẳng định  sai</font>
+                    </div>
+                    
+</div>
+</div>
+</div>
+<div class='cauhoi' id='QuestID17' data-qtype='sa' data-original-id='q17'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 17</span>.</b> Một miếng pho mát có dạng khối lăng trụ đứng với chiều cao $10\;cm$ và đáy là tam giác vuông cân có cạnh góc vuông bằng $12\;cm$ . Tính khối lượng của miếng pho mát theo đơn vị gam, biết khối lượng riêng của loại pho mát đó là $3 {\text{g/c}}{{\text{m}}^{\text{3}}}$ .</font></p>
+<div class='options_sa'> <label><b>Trả lời: </b></label> <input type='text' name='q17' id='q17' size='10' class='short-answer-input'> <span id='check17' class='check-mark'></span> </div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc17' onclick='toggleSolution("q17")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc17' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 17</span>:</b><br>
+                        <p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084248/temp_images_de4-final-copy/hinh_5.png" alt="Hình ảnh hinh_5.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>			Thể tích khối pho mát là $V = \dfrac{1}{3}{S_{\Delta ABC}}.AA' = \dfrac{1}{3}.\dfrac{1}{2}AB.AC.AA' = \dfrac{1}{6}.12.12.10 = 240\;c{m^3}$ .<br>Và khối lượng riêng của loại pho mát là $\rho = 3\;g/c{m^3}$ .<br>Suy ra khối lượng của miếng pho mát là $m = \rho .V = 3.240\;gam = 720\;gam$ .
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID18' data-qtype='sa' data-original-id='q18'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 18</span>.</b> Trong không gian với hệ toạ độ $Oxyz$ , cho hai điểm $A\left( 2,2,0 \right)$ , $B\left( 2,0, - 2 \right)$  và điểm $M\left( a,b,c \right)$ với $a,b,c$ là các số thực thay đổi thoả mãn $a + 2b - c - 1 = 0$ Biết $MA = MB$ và góc $\widehat {AMB}$  có số đo lớn nhất. Tính $S = 11a + 22b + 33c$ .</font></p>
+<div class='options_sa'> <label><b>Trả lời: </b></label> <input type='text' name='q18' id='q18' size='10' class='short-answer-input'> <span id='check18' class='check-mark'></span> </div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc18' onclick='toggleSolution("q18")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc18' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 18</span>:</b><br>
+                        Từ giả thiết, điểm $M$ thuộc mặt phẳng $\left( P \right):x + 2y - z - 1 = 0$ ;<br>Có $MA = MB$ , suy ra $M$ thuộc mặt phẳng trung trực của $AB$ là $\left( Q \right):y + z = 0$ ;<br>Suy ra $M$ thuộc giao tuyến của hai mặt phẳng $\left( P \right)$ và $\left( Q \right)$ .<br>Ta tìm được đó là đường thẳng $\Delta :\heva{ x & = 1 - 3t \\ y & = t \\ z & = - t }$ .<br>Tham số hóa $M\left( 1 - 3t;t; - t \right)$ thì $\overrightarrow {AM} \left( - 1 - 3t;t - 2; - t \right);\overrightarrow {BM} \left( - 1 - 3t;t; - t + 2 \right)$ <br>Suy ra $\cos AMB = \dfrac{\overrightarrow {MA} .\overrightarrow {MB}}{MA.MB} = \dfrac{{{\left ( 1 + 3t \right )}^2} + t\left ( t - 2 \right ).2}{{{\left ( 1 + 3t \right )}^2} + {{\left ( t - 2 \right )}^2} + t^2} = \dfrac{11t^2 + 2t + 1}{11t^2 + 2t + 5} = f\left( t \right)$ <br>Để góc $AMB$ lớn nhất thì ta cần $\cos AMB = f\left( t \right)$ nhỏ nhất.<br>Khảo sát hàm $f\left( t \right)$ ta được $f\left( t \right)$ nhỏ nhất khi và chỉ khi $t = - \dfrac{1}{11}$ .<br>Suy ra $M\left( \dfrac{14}{11}; - \dfrac{1}{11};\dfrac{1}{11} \right)$ . Vậy $S = 15$ .<br>Đáp án: $15$
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID19' data-qtype='sa' data-original-id='q19'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 19</span>.</b> Hai thành phố $A$ và $B$ cách nhau một con sông. Người ta xây dựng một cây cầu $EF$ bắc qua sông biết rằng thành phố $A$ cách con sông một khoảng là 4km và thành phố $B$ cách con sông một khoảng là 6km (được mô hình hoá như hình vẽ), biết $HE + KF = 20$ km và độ dài $EF$ không đổi. Hỏi độ dài $EH$ bằng bao nhiêu kilomet để đường đi từ thành phố $A$ đến thành phố $B$ là ngắn nhất (đi theo đường $AEFB$ )?</font></p>
+<div class='options_sa'> <label><b>Trả lời: </b></label> <input type='text' name='q19' id='q19' size='10' class='short-answer-input'> <span id='check19' class='check-mark'></span> </div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc19' onclick='toggleSolution("q19")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc19' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 19</span>:</b><br>
+                        <p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084248/temp_images_de4-final-copy/hinh_4.png" alt="Hình ảnh hinh_4.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>			Đặt $HE = {x_{}}{,_{}}FK = y$ , với $x, y &gt; 0$ <br>Ta có: $HE + KF = 20 \Rightarrow x + y = 20$ , $\heva{ AE & = \sqrt {16 + x^2} \\ BF & = \sqrt {36 + y^2} = \sqrt {36 + {{\left( 20 - x \right)}^2}} }$<br>Nhận xét: Vì $EF$ không đổi nên $AB$ ngắn nhất khi $AE + BF$ nhỏ nhất.<br>Ta có $AE + BF$ $= \sqrt {x^2 + 16} + \sqrt {{{\left( 20 - x \right)}^2} + 36} = \sqrt {x^2 + 16} + \sqrt {x^2 - 40x + 436} = f\left( x \right)$ <br>Đạo hàm $f'\left( x \right) = \dfrac{x}{\sqrt{x^2 + 16}} + \dfrac{x - 20}{\sqrt{x^2 - 40x + 436}} = 0 \Rightarrow x = 8, \forall x \in \left( 0;20 \right)$  <br>Bảng biến thiên<br>			<p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084247/temp_images_de4-final-copy/hinh_3.png" alt="Hình ảnh hinh_3.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>			Vậy $HE = 8$ km
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID20' data-qtype='sa' data-original-id='q20'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 20</span>.</b> Khi loại thuốc $A$ được tiêm vào bệnh nhân, nồng độ mg/l của thuốc trong máu sau $x$ phút (kể từ khi bắt đầu tiêm) được xác định bởi công thức: $C(x) = \dfrac{30x}{x^2 + 2}.$ Để đưa ra những lời khuyên và cách xử lí phù hợp cho bệnh nhân, ta cần tìm khoảng thời gian mà nồng độ của thuốc trong máu đang tăng. Em hãy cho biết hàm nồng độ thuốc trong máu $C(x)$ đạt giá trị cực đại là bao nhiêu trong khoảng thời gian $6$ phút sau khi tiêm (kết quả làm tròn đến hàng phần mười)?</font></p>
+<div class='options_sa'> <label><b>Trả lời: </b></label> <input type='text' name='q20' id='q20' size='10' class='short-answer-input'> <span id='check20' class='check-mark'></span> </div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc20' onclick='toggleSolution("q20")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc20' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 20</span>:</b><br>
+                        Ta có: $C'(x) = \dfrac{ - 30x^2 + 60}{{(x^2 + 2)}^2};C'(x) = 0 \Rightarrow - 30x^2 + 60 = 0 \Leftrightarrow \hoac{ x & = \sqrt 2 \Rightarrow C(x) = \dfrac{15\sqrt 2 }{2} \approx 10,6 \\ x & = - \sqrt 2 \notin [0;6] }$<br>			Bảng biến thiên:<br>			<p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084246/temp_images_de4-final-copy/hinh_2.png" alt="Hình ảnh hinh_2.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>			Vậy $C(x)$ đạt cực đại trên khoảng thời gian $6$ phút sau khi tiêm bằng $10,6$ (mg/l).
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID21' data-qtype='sa' data-original-id='q21'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 21</span>.</b> Tổng hợp tiền lương tháng của một số nhân viên văn phòng được ghi lại như sau (đơn vị: triệu đồng).<br>		<p style="text-align: center;"><img src="https://res.cloudinary.com/dnxjp0u7c/image/upload/v1774084241/temp_images_de4-final-copy/hinh_1.png" alt="Hình ảnh hinh_1.png" style="max-width: 90%; height: auto; display: inline-block; border: none;"></p><br>		Hãy tính tứ phân vị thứ nhất của số liệu ở bảng tần số ghép nhóm trên?</font></p>
+<div class='options_sa'> <label><b>Trả lời: </b></label> <input type='text' name='q21' id='q21' size='10' class='short-answer-input'> <span id='check21' class='check-mark'></span> </div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc21' onclick='toggleSolution("q21")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc21' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 21</span>:</b><br>
+                        Ta có: Cỡ mẫu là: $n = 3 + 6 + 8 + 7 = 24$ .<br>$\dfrac{n}{4} = 6$ thuộc nhóm $\left[ {8;10} \right)$ .<br>Vậy tứ phân vị thứ nhất của số liệu ở bảng tần số ghép nhóm trên là:<br>$Q_1 = 8 + \dfrac{6 - 3}{6}.2 = 9.$
+                    </font>
+                </div>
+                
+</div>
+<div class='cauhoi' id='QuestID22' data-qtype='sa' data-original-id='q22'>
+<p><font class="question-text" color='#0000FF'><b><span class="question-number">Câu 22</span>.</b> Cho hàm số $f\left( x \right)$ liên tục trên $\mathbb{R}$ và $\mathop {\lim }\limits_{x \to - \infty } f\left( x \right) = 1;\mathop {\lim }\limits_{x \to + \infty } f\left( x \right) = + \infty$ . Có bao nhiêu giá trị nguyên của tham số $m$ thuộc $\left[ - 2020;2020 \right]$ để đồ thị hàm số $g\left( x \right) = \dfrac{\sqrt{x^2 + 1000x} + x}{\sqrt{2f\left ( x \right ) - f^2\left ( x \right )} + m}$ có tiệm cận ngang   nằm dưới đường thẳng $y = - 1$ .</font></p>
+<div class='options_sa'> <label><b>Trả lời: </b></label> <input type='text' name='q22' id='q22' size='10' class='short-answer-input'> <span id='check22' class='check-mark'></span> </div>
+<button type='button' class='btnCtrlCSS btn-xem-lg-cau' id='btlgc22' onclick='toggleSolution("q22")' style='margin-top: 10px; display: none;'>Xem lời giải</button>
+
+                <div class='loigiai' id='lgc22' style='display:none; background-color: #FFFFFF; padding: 10px; border-top: 1px dashed #000000; margin-top: 10px;'>
+                    <font color='#000000'>
+                        <b><span class='solution-number'>Lời giải câu 22</span>:</b><br>
+                        $\mathop {\lim }\limits_{x \to + \infty } f\left( x \right) = + \infty \Rightarrow \mathop {\lim }\limits_{x \to + \infty } \left[ 2f\left( x \right) - f^2\left( x \right) \right] = - \infty$ nên không tồn tại $\mathop {\lim }\limits_{x \to + \infty } g\left( x \right)$ .<br>$\mathop {\lim }\limits_{x \to - \infty } f\left( x \right) = 1 \Rightarrow \mathop {\lim }\limits_{x \to - \infty } \left[ \sqrt {2f\left( x \right) - f^2\left( x \right)} + m \right] = 1 + m$ .<br>$\mathop {\lim }\limits_{x \to - \infty } \left[ \sqrt {x^2 + 1000x} + x \right] = \mathop {\lim }\limits_{x \to - \infty } \left[ \dfrac{1000x}{\sqrt{x^2 + 1000x} - x} \right] = \mathop {\lim }\limits_{x \to - \infty } \left[ \dfrac{1000}{ - \sqrt{1 + 1000/x} - 1} \right] = - 500.$<br>			$\mathop {\lim }\limits_{x \to - \infty } g\left( x \right) = \dfrac{ - 500}{1 + m}\left( m \ne - 1 \right)$ suy ra tiệm cận ngang của đồ thị hàm số $g\left( x \right)$ là đường thẳng $y = \dfrac{ - 500}{1 + m}$<br>Để đồ thị hàm số $g\left( x \right)$ có tiệm cận ngang nằm dưới đường thẳng $y = - 1$ khi và chỉ khi $\dfrac{ - 500}{1 + m} &lt; - 1 \Leftrightarrow \dfrac{m - 499}{m + 1} &lt; 0 \Leftrightarrow - 1 &lt; m &lt; 499$ mà $m$ nguyên thuộc $\left[ - 2020;2020 \right]$ nên $m \in \left\{ 0;1;2;...;498 \right\}$ .<br>Vậy có $498 - 0 + 1 = 499$ giá trị nguyên của $m$ .
+                    </font>
+                </div>
+                
+</div>
+</div>
+<hr style='margin: 20px 0;'>
+<div id='controls-area' style='margin-top: 15px;'>
+<p>
+<input onclick='showAnswers()' type='button' value='Xem đáp án' class='btnCtrlCSS' id='btnXemDA' style='display: none;' disabled>&nbsp;&nbsp;
+<input id='btnXemLGAll' onclick='toggleAllSolutions()' type='button' value='Xem Tất cả Lời giải' class='btnCtrlCSS' style='display: none;'>
+</p><p>Số điểm <b><input class='bgclr' disabled id='scoreDisplay' size='1' type='text' value='0.00' /></b>&nbsp;&nbsp;</p>
+<p><textarea class='bgclr' cols='80' disabled id='txtDapAn' rows='4' style='height: 70px; margin: 0px; width: 99%; display: none;' wrap='virtual'></textarea></p>
+</div>
+</div>
+<div style='margin-top: 20px;'> <form name="cform" id="cform" onsubmit='return submitResults();'> <label hidden id='tendeField'>THPT - LIÊN CẤP ĐẠI HỌC HỒNG ĐỨC</label> <input type='hidden' id='intimeField'> <center><button type="submit" id='btnSubmit' class='btnNopBaiCSS' >Chấm điểm (Offline)</button></center> </form> <center> <h3 id='submitStatus' class="text-center" style="display: none; color: green;"></h3> </center> </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js"></script>
+
+<div id="cheat-overlay">
+    <div id="cheat-box">
+        <h2 style="color: #d32f2f; margin-top: 0;">⚠️ CẢNH BÁO VI PHẠM</h2>
+        <p style="font-size: 1.1em; line-height: 1.5;">
+            Hệ thống phát hiện bạn đã rời khỏi màn hình làm bài hoặc cố gắng chia đôi màn hình.
+        </p>
+        <p style="font-weight: bold;">
+            Vi phạm: <span id="violation-count" style="font-size: 1.5em; color: red;">0</span> / <span id="max-violation"></span>
+        </p>
+        <p style="font-size: 0.9em; color: #666;">
+            Nếu vượt quá số lần quy định, bài thi sẽ tự động bị nộp.
+        </p>
+        <button class="cheat-btn" onclick="dismissCheatWarning()">Tôi đã hiểu & Tiếp tục làm bài</button>
+    </div>
+</div>
+
+<script>
+    const quizData = {
+    "examId": "2bbcb98e-de14-46bb-b2fc-9857d208d461",
+    "timeLimitMinutes": 90,
+    "minSubmissionMinutes": 10,
+    "checkDeviceTime": true,
+    "timeErrorMarginMinutes": 1,
+    "enableStartTime": false,
+    "startTime": "2026-03-21T17:18:00",
+    "enableEndTime": false,
+    "endTime": "2026-03-21T18:48:00",
+    "showHomepageOnGate": true,
+    "homepageURL": "",
+    "googleSheetURL": "https://script.google.com/macros/s/AKfycbxUoVEDp-vTKSnstMcDyBqVXZfj0N1YL71NRsiK-pkZ4cQ6xhXb1NCRuSFMqfzcBs6klA/exec",
+    "tenDe": "THPT - LIÊN CẤP ĐẠI HỌC HỒNG ĐỨC",
+    "allowedAttempts": 0,
+    "maxViolations": 3,
+    "enableSubmission": false,
+    "hien_tung_cau_hoi": false,
+    "show_xem_loi_giai_all_button": false,
+    "show_xem_dap_an_button": true,
+    "show_xem_loi_giai_tung_cau_buttons": true,
+    "enableOfflineGrading": true,
+    "answers": {
+        "q1": "A",
+        "q2": "C",
+        "q3": "B",
+        "q4": "D",
+        "q5": "C",
+        "q6": "A",
+        "q7": "D",
+        "q8": "B",
+        "q9": "C",
+        "q10": "A",
+        "q11": "C",
+        "q12": "B",
+        "q13": "DSSS",
+        "q14": "SDDS",
+        "q15": "DSDS",
+        "q16": "DSDS",
+        "q17": "720",
+        "q18": "15",
+        "q19": "8",
+        "q20": "10,6",
+        "q21": "9",
+        "q22": "499"
+    },
+    "points": {
+        "mc": 3.0,
+        "tf_1_correct": 0.1,
+        "tf_2_correct": 0.25,
+        "tf_3_correct": 0.5,
+        "tf_4_correct": 1.0,
+        "sa": 3.0
+    },
+    "questionTypes": {
+        "q1": "mc",
+        "q2": "mc",
+        "q3": "mc",
+        "q4": "mc",
+        "q5": "mc",
+        "q6": "mc",
+        "q7": "mc",
+        "q8": "mc",
+        "q9": "mc",
+        "q10": "mc",
+        "q11": "mc",
+        "q12": "mc",
+        "q13": "tf",
+        "q14": "tf",
+        "q15": "tf",
+        "q16": "tf",
+        "q17": "sa",
+        "q18": "sa",
+        "q19": "sa",
+        "q20": "sa",
+        "q21": "sa",
+        "q22": "sa"
+    },
+    "enableShuffling": true,
+    "hien_thi_dap_an_tren_cau_hoi": false
+};
+    let timerInterval = null;
+    let targetEndTime = null;
+    let timeLeftSeconds = 0;
+    let quizSubmitted = false;
+    let actualStartTime = null; 
+    const correctMark = '&#10004;';
+    const incorrectMark = '&#10006;';
+    let originalQuestionOrder = [];
+    let shuffledQuestionOrder = [];
+    let shuffledAnswers = {}; 
+    let quizStarted = false;
+    
+    // --- BIẾN ANTI-CHEAT ---
+    let violationCount = 0;
+    const MAX_VIOLATIONS = quizData.maxViolations;
+    let isWarningVisible = false;
+    let initialWindowWidth = window.innerWidth;
+    let initialWindowHeight = window.innerHeight;
+    
+    // Biến cờ quan trọng: Đang nộp bài
+    let isSubmitting = false;
+
+    let noSleep = new NoSleep(); 
+
+    const storageKeyAttempts = 'quiz_attempts_' + quizData.examId;
+
+    function handleViolation(reason) {
+        // SỬA LỖI: Nếu đang nộp (isSubmitting = true) thì KHÔNG tính lỗi
+        if (!quizStarted || quizSubmitted || isWarningVisible || isSubmitting) return;
+        
+        violationCount++;
+        console.log("Vi phạm:", reason, "Lần:", violationCount);
+        
+        if (violationCount > MAX_VIOLATIONS) {
+            alert("BẠN ĐÃ VI PHẠM QUY CHẾ THI QUÁ SỐ LẦN QUY ĐỊNH (" + MAX_VIOLATIONS + " lần).\n\nHệ thống sẽ tự động nộp bài ngay lập tức.");
+            submitResults(true, "Vi phạm quy chế thi"); 
+        } else {
+            showCheatWarning();
+        }
+    }
+
+    function showCheatWarning() {
+        isWarningVisible = true;
+        document.getElementById('violation-count').innerText = violationCount;
+        document.getElementById('max-violation').innerText = MAX_VIOLATIONS;
+        document.getElementById('cheat-overlay').style.display = 'flex';
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    }
+
+    function dismissCheatWarning() {
+        document.getElementById('cheat-overlay').style.display = 'none';
+        isWarningVisible = false;
+        if (document.documentElement.requestFullscreen) {
+             document.documentElement.requestFullscreen().catch(()=>{});
+        }
+        if (noSleep) { noSleep.enable(); }
+    }
+    
+    document.addEventListener('visibilitychange', function() {
+        // Nếu đang nộp bài (isSubmitting) thì bỏ qua kiểm tra này
+        if (document.hidden && quizStarted && !quizSubmitted && !isSubmitting) { 
+            handleViolation("Rời khỏi màn hình thi");
+        }
+        if (!document.hidden && noSleep) { noSleep.enable(); }
+    });
+
+    window.addEventListener('blur', function() {
+        if (quizStarted && !quizSubmitted && !isSubmitting) {
+            setTimeout(() => {
+                if (document.activeElement.tagName === 'IFRAME') return; 
+                handleViolation("Mất tiêu điểm cửa sổ");
+            }, 100);
+        }
+    });
+    
+    window.addEventListener('resize', function() {
+        if (!quizStarted || quizSubmitted || isSubmitting) return;
+        const widthDiff = Math.abs(window.innerWidth - initialWindowWidth);
+        if (widthDiff > window.screen.width * 0.2) {
+            handleViolation("Thay đổi kích thước cửa sổ");
+            initialWindowWidth = window.innerWidth; 
+        }
+    });
+
+    function checkInAppBrowser() {
+        var ua = navigator.userAgent || navigator.vendor || window.opera;
+        if ((ua.indexOf("Zalo") > -1) || (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1)) {
+            var warningDiv = document.createElement('div');
+            warningDiv.id = 'inapp-warning';
+            warningDiv.innerHTML = `
+                <div class="arrow-up-right">↗️</div>
+                <div id="inapp-instruction">
+                    <h2 style="color: #ffeb3b;">⚠️ Cảnh báo Trình duyệt</h2>
+                    <p>Bạn đang dùng Zalo/Facebook. Vui lòng mở bằng trình duyệt ngoài (Chrome/Safari) để nộp bài và in PDF ổn định.</p>
+                    <p style="color: #4fc3f7; font-weight: bold;">Bấm dấu 3 chấm góc trên -> Mở bằng trình duyệt.</p>
+                </div>`;
+            document.body.appendChild(warningDiv);
+            document.getElementById('inapp-warning').style.display = 'block';
+            document.body.style.overflow = 'hidden'; 
+        }
+    }
+
+    function checkAttempts() {
+        let maxAttempts = quizData.allowedAttempts;
+        
+        // NẾU GIÁO VIÊN NHẬP SỐ 0 HOẶC GÕ CHỮ "Vô hạn" -> CHO QUA LUÔN (VÔ HẠN)
+        if (maxAttempts == 0 || maxAttempts === "Vô hạn") {
+            return true; 
+        }
+
+        maxAttempts = parseInt(maxAttempts) || 1;
+        const currentAttempts = parseInt(localStorage.getItem(storageKeyAttempts) || '0');
+        if (currentAttempts >= maxAttempts) {
+            document.body.innerHTML = `<div id="block-screen"><h1 style="color: red;">Hết lượt làm bài</h1><p>Bạn đã dùng hết ${maxAttempts} lượt quy định.</p></div>`;
+            return false;
+        }
+        return true;
+    }
+    if (!checkAttempts()) { throw new Error("Stopped"); }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function shuffleQuestionsAndOptions() {
+        originalQuestionOrder = Object.keys(quizData.questionTypes).sort((a, b) => parseInt(a.substring(1)) - parseInt(b.substring(1)));
+        shuffledAnswers = {};
+        originalQuestionOrder.forEach(qId => { if (quizData.answers[qId]) shuffledAnswers[qId] = quizData.answers[qId]; });
+
+        if (!quizData.enableShuffling) {
+            shuffledQuestionOrder = [...originalQuestionOrder];
+        } else {
+            const questionsByType = {};
+            for (const qId of originalQuestionOrder) { const qType = quizData.questionTypes[qId]; if (!questionsByType[qType]) questionsByType[qType] = []; questionsByType[qType].push(qId); }
+            for (const qType in questionsByType) { shuffleArray(questionsByType[qType]); }
+            shuffledQuestionOrder = []; 
+            ['mc', 'tf', 'sa', 'essay'].forEach(t => { if (questionsByType[t]) shuffledQuestionOrder.push(...questionsByType[t]); });
+            
+            originalQuestionOrder.forEach(qId => {
+                const qType = quizData.questionTypes[qId]; 
+                const qDiv = document.getElementById(`QuestID${qId.substring(1)}`); 
+                if (!qDiv) return;
+
+                if (qType === 'mc') {
+                    const container = qDiv.querySelector('.options');
+                    if (container) {
+                        const opts = Array.from(container.querySelectorAll('.mc-option-item'));
+                        shuffleArray(opts); 
+                        opts.forEach(o => container.appendChild(o));
+                        const spans = container.querySelectorAll('.option-letter b');
+                        let newCorrect = '?';
+                        opts.forEach((opt, idx) => {
+                            const newL = String.fromCharCode(65 + idx);
+                            if (spans[idx]) spans[idx].textContent = `${newL}.`;
+                            if (opt.querySelector('input').value === quizData.answers[qId]) newCorrect = newL;
+                        });
+                        shuffledAnswers[qId] = newCorrect;
+                    }
+                } else if (qType === 'tf') {
+                     const container = qDiv.querySelector('.options_tf');
+                     if (container) {
+                        const items = Array.from(container.querySelectorAll('.tf-option-item'));
+                        shuffleArray(items);
+                        items.forEach(i => container.appendChild(i));
+                        const spans = container.querySelectorAll('.option-letter-tf b');
+                        const oldLabels = ['a','b','c','d'];
+                        let newKey = "";
+                        const oldKey = quizData.answers[qId] || "----";
+                        items.forEach((item, idx) => {
+                            const newL = String.fromCharCode(97 + idx);
+                            if (spans[idx]) spans[idx].textContent = `${newL})`;
+                            const rad = item.querySelector('input');
+                            let oldL = '?';
+                            if (rad && rad.name) {
+                                const m = rad.name.match(/q\d+([a-d])$/);
+                                if (m) oldL = m[1];
+                            }
+                            item.setAttribute('data-original-label', oldL);
+                            const oldIdx = oldLabels.indexOf(oldL);
+                            if (oldIdx !== -1 && oldIdx < oldKey.length) newKey += oldKey.charAt(oldIdx);
+                            else newKey += '?';
+                        });
+                        shuffledAnswers[qId] = newKey;
+                     }
+                }
+            });
+        }
+
+        const container = document.getElementById('quiz-container');
+        const map = {};
+        originalQuestionOrder.forEach(id => { const d = document.getElementById(`QuestID${id.substring(1)}`); if(d) map[id]=d; });
+        while(container.firstChild) container.removeChild(container.firstChild);
+        shuffledQuestionOrder.forEach(id => { if(map[id]) container.appendChild(map[id]); });
+        
+        const nav = document.getElementById('question-nav'); 
+        nav.innerHTML = '';
+        shuffledQuestionOrder.forEach((id, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'nav-button'; 
+            btn.id = `nav-btn-${id}`;
+            btn.textContent = idx + 1;
+            btn.onclick = () => {
+                if (quizData.hien_tung_cau_hoi) {
+                    showQuestion(id);
+                } else {
+                    const t = document.getElementById(`QuestID${id.substring(1)}`);
+                    if(t) t.scrollIntoView({behavior: 'smooth', block: 'center'});
+                }
+            };
+            nav.appendChild(btn);
+            const qDiv = document.getElementById(`QuestID${id.substring(1)}`);
+            if(qDiv) {
+                const numSpan = qDiv.querySelector('.question-number');
+                if(numSpan) numSpan.textContent = `Câu ${idx + 1}`;
+                
+                const qIdNum = id.substring(1); 
+                const solutionDiv = document.getElementById(`lgc${qIdNum}`);
+                if (solutionDiv) {
+                    const solNumSpan = solutionDiv.querySelector('.solution-number');
+                    if (solNumSpan) {
+                        solNumSpan.textContent = `Lời giải câu ${idx + 1}`;
+                    }
+                }
+            }
+        });
+    }
+
+    function showQuestion(qIdToShow) {
+        currentQuestionId = qIdToShow;
+        const navButtons = document.querySelectorAll('#question-nav .nav-button');
+        navButtons.forEach(btn => { 
+            btn.classList.toggle('active-nav-button', btn.id === `nav-btn-${qIdToShow}`); 
+        });
+
+        if (quizData.hien_tung_cau_hoi) {
+            document.querySelectorAll('#quiz-container .cauhoi').forEach(div => { div.style.display = 'none'; });
+            const targetDiv = document.getElementById(`QuestID${qIdToShow.substring(1)}`);
+            if (targetDiv) {
+                targetDiv.style.display = 'block';
+                if (typeof MathJax !== 'undefined' && MathJax.Hub) { MathJax.Hub.Queue(["Typeset", MathJax.Hub, targetDiv]); }
+            }
+        }
+    }
+
+    function startTimer() {
+        actualStartTime = new Date();
+        const durationMs = quizData.timeLimitMinutes * 60 * 1000;
+        targetEndTime = actualStartTime.getTime() + durationMs;
+        
+        const timerDisplay = document.getElementById('thoigian');
+        
+        timerInterval = setInterval(() => {
+            if (quizSubmitted) { clearInterval(timerInterval); return; }
+            
+            const now = new Date().getTime();
+            const diff = targetEndTime - now;
+            
+            timeLeftSeconds = Math.floor(diff / 1000);
+            
+            if (timeLeftSeconds < 0) timeLeftSeconds = 0;
+
+            const m = Math.floor(timeLeftSeconds / 60);
+            const s = (timeLeftSeconds % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${m}:${s}`;
+            
+            if (timeLeftSeconds <= 0) { 
+                clearInterval(timerInterval); 
+                alert("Hết giờ!"); 
+                submitResults(true, "Hết thời gian"); 
+            }
+        }, 1000);
+    }
+
+    function startQuiz() {
+        if (quizStarted) return;
+        const n = document.getElementById('nameField').value.trim();
+        const l = document.getElementById('lopField').value.trim();
+        if (!n || !l) { alert("Vui lòng nhập Họ tên và Lớp."); return; }
+        
+        quizStarted = true;
+        initialWindowWidth = window.innerWidth; 
+        initialWindowHeight = window.innerHeight;
+
+        document.getElementById('btnStartQuiz').style.display = 'none';
+        document.getElementById('quiz-main-content').style.display = 'block';
+        document.getElementById('quiz-timer-bar').style.display = 'block';
+        
+        startTimer();
+        noSleep.enable(); 
+        
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(()=>{});
+        }
+
+        if (shuffledQuestionOrder.length > 0) {
+            if (quizData.hien_tung_cau_hoi) {
+                showQuestion(shuffledQuestionOrder[0]);
+                document.getElementById('question-nav-container').style.display = 'block';
+            } else {
+                document.querySelectorAll('#quiz-container .cauhoi').forEach(div => { div.style.display = 'block'; });
+                document.getElementById('question-nav-container').style.display = 'none'; 
+                if (typeof MathJax !== 'undefined' && MathJax.Hub) { MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('quiz-container')]); }
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        checkInAppBrowser();
+        
+        const now = new Date();
+        const dateOptions = { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' };
+        
+        if (quizData.enableStartTime && quizData.startTime) {
+            const start = new Date(quizData.startTime);
+            if (now < start) {
+                 document.body.innerHTML = `<div style="text-align:center; margin-top:20vh"><h1>⛔ Chưa đến giờ mở đề</h1><p>Mời bạn quay lại lúc: <b>${start.toLocaleString('vi-VN', dateOptions)}</b></p></div>`;
+                 return;
+            }
+        }
+         if (quizData.enableEndTime && quizData.endTime) {
+            const end = new Date(quizData.endTime);
+            if (now > end) {
+                 document.body.innerHTML = `<div style="text-align:center; margin-top:20vh"><h1>⛔ Đề thi đã đóng</h1><p>Thời gian đóng đề: <b>${end.toLocaleString('vi-VN', dateOptions)}</b></p></div>`;
+                 return;
+            }
+        }
+
+        shuffleQuestionsAndOptions();
+        const btn = document.getElementById('btnStartQuiz');
+        if(btn) { btn.disabled = false; btn.addEventListener('click', startQuiz); }
+        
+        document.getElementById('quiz-container').addEventListener('change', e => {
+            let qId = null;
+            if (e.target.type === 'radio' && e.target.name) {
+                const m = e.target.name.match(/^(q\d+)/); if(m) qId = m[1];
+            } else if (e.target.id && e.target.id.startsWith('q')) { qId = e.target.id; }
+            if (qId) {
+                const btn = document.getElementById(`nav-btn-${qId}`);
+                if(btn) btn.classList.add('answered-nav-button');
+            }
+        });
+    });
+
+    function printResultPC() { window.print(); }
+
+    function _calculateResults() {
+        let score = 0; 
+        let userAnsStr = ""; 
+        let userAnsMap = {};
+        
+        let countMC = 0, countSA = 0;
+        for (let id in quizData.questionTypes) {
+            if (quizData.questionTypes[id] === 'mc') countMC++;
+            else if (quizData.questionTypes[id] === 'sa') countSA++;
+        }
+        const scorePerMC = countMC ? (quizData.points.mc / countMC) : 0;
+        const scorePerSA = countSA ? (quizData.points.sa / countSA) : 0;
+
+        shuffledQuestionOrder.forEach(qId => {
+            const type = quizData.questionTypes[qId];
+            const correct = shuffledAnswers[qId] || "";
+            const div = document.getElementById(`QuestID${qId.substring(1)}`);
+            
+            if (type === 'mc') {
+                const sel = div.querySelector('input:checked');
+                let ans = "?";
+                if (sel) {
+                    const span = sel.parentElement.querySelector('.option-letter b');
+                    if(span) ans = span.textContent.trim().replace('.','');
+                }
+                userAnsStr += ans;
+                userAnsMap[qId] = ans;
+                if (ans === correct) score += scorePerMC;
+            } else if (type === 'sa') {
+                const inp = document.getElementById(qId);
+                const ans = inp ? inp.value.trim() : "";
+                userAnsStr += ans || "?";
+                userAnsMap[qId] = ans;
+                if (ans.toLowerCase().replace(',','.') === String(correct).toLowerCase().replace(',','.')) score += scorePerSA;
+            } else if (type === 'tf') {
+                const items = div.querySelectorAll('.tf-option-item');
+                let subCorrectCount = 0;
+                let ansTf = "";
+                items.forEach((item, idx) => {
+                    const sel = item.querySelector('input:checked');
+                    const subAns = sel ? sel.value : "?";
+                    ansTf += subAns;
+                    const subKey = correct.length > idx ? correct.charAt(idx) : '?';
+                    if (subAns === subKey) subCorrectCount++;
+                });
+                userAnsStr += ansTf + "; ";
+                userAnsMap[qId] = ansTf;
+                
+                let p = 0;
+                if (subCorrectCount === 1) p = quizData.points.tf_1_correct;
+                else if (subCorrectCount === 2) p = quizData.points.tf_2_correct;
+                else if (subCorrectCount === 3) p = quizData.points.tf_3_correct;
+                else if (subCorrectCount === 4) p = quizData.points.tf_4_correct;
+                score += p;
+            }
+            
+            if (shuffledQuestionOrder.indexOf(qId) < shuffledQuestionOrder.length - 1 && type !== 'tf') userAnsStr += "; ";
+        });
+        
+        return { score: score.toFixed(2), answersString: userAnsStr, userAnswersMap: userAnsMap };
+    }
+
+    function _displayResultsOnPage(finalScore, userMap, showDetails) {
+        const sDisplay = document.getElementById('scoreDisplay');
+        if (sDisplay) {
+            sDisplay.value = finalScore;
+            sDisplay.style.backgroundColor = '#ffeb3b';
+            sDisplay.style.color = '#d32f2f';
+            sDisplay.style.border = '2px solid #d32f2f';
+            sDisplay.style.textAlign = 'center';
+        }
+
+        let ansText = "";
+        shuffledQuestionOrder.forEach((qId, idx) => {
+            const key = shuffledAnswers[qId] || "?";
+            ansText += (idx + 1) + "." + key + "  ";
+            if ((idx + 1) % 10 === 0) ansText += "\n";
+        });
+        const txtArea = document.getElementById('txtDapAn');
+        if(txtArea) txtArea.value = ansText;
+
+        const correctAnswers = shuffledAnswers;
+        shuffledQuestionOrder.forEach(qId => {
+            const div = document.getElementById(`QuestID${qId.substring(1)}`);
+            if(!div) return;
+            div.querySelectorAll('input').forEach(i => i.disabled = true);
+            
+            if (showDetails) {
+                const type = quizData.questionTypes[qId];
+                const correct = correctAnswers[qId] || "?";
+                const user = userMap[qId] || "?";
+                
+                if (type === 'mc') {
+                     div.querySelectorAll('input').forEach(rad => {
+                        const parent = rad.parentElement;
+                        const letSpan = parent.querySelector('.option-letter b');
+                        const letter = letSpan ? letSpan.textContent.replace('.','').trim() : '';
+                        const mark = document.getElementById(`check${qId.substring(1)}${rad.value}`);
+                        if (letter === correct) parent.classList.add('rchc');
+                        if (letter === user) {
+                            if (user === correct) mark.innerHTML = `<span style="color:green">${correctMark}</span>`;
+                            else mark.innerHTML = `<span style="color:red">${incorrectMark} (ĐA: ${correct})</span>`;
+                        }
+                     });
+                } else if (type === 'tf') {
+                     const tfItems = div.querySelectorAll('.tf-option-item');
+                     for (let j = 0; j < tfItems.length; j++) {
+                        const item = tfItems[j]; 
+                        const originalLabel = item.getAttribute('data-original-label');
+                        const markSpan = document.getElementById(`check${qId.substring(1)}${originalLabel}`);
+                        const subCorrect = correct.length > j ? correct.charAt(j) : '?';
+                        const subUser = user.length > j ? user.charAt(j) : '?';
+                        item.querySelectorAll('input[type="radio"]').forEach(radio => {
+                             if (radio.value === subCorrect) { radio.closest('label').classList.add('correct-tf-choice'); }
+                             if (markSpan && radio.value === subUser) { 
+                                 markSpan.innerHTML = (subUser === subCorrect) ? `<span style="color:green">${correctMark}</span>` : ` <span style="color:red">${incorrectMark} (ĐA: ${subCorrect})</span>`; 
+                             }
+                        });
+                    }
+                } else if (type === 'sa') {
+                     const mark = document.getElementById(`check${qId.substring(1)}`);
+                     if(mark) {
+                        const isRight = String(user).toLowerCase() === String(correct).toLowerCase();
+                        mark.innerHTML = isRight ? `<span style="color:green">${correctMark}</span>` : `<span style="color:red">${incorrectMark} (ĐA:${correct})</span>`;
+                     }
+                }
+                
+                 if (quizData.show_xem_loi_giai_tung_cau_buttons) {
+                    const b = div.querySelector('.btn-xem-lg-cau');
+                    if(b) { b.style.display = 'inline-block'; b.textContent = 'Xem lời giải'; }
+                    div.querySelectorAll('.btn-xem-lg-cau-item').forEach(btn => { btn.style.display = 'inline-block'; btn.textContent = 'Xem giải thích'; });
+                 }
+            }
+        });
+
+        const ctrlArea = document.getElementById('controls-area');
+        if(ctrlArea) {
+             ctrlArea.querySelectorAll('.btnPrintCSS').forEach(e => e.remove());
+             const btnP = document.createElement('button');
+             btnP.className = 'btnPrintCSS';
+             btnP.innerHTML = '🖨️ In Kết Quả (PDF)';
+             btnP.onclick = printResultPC;
+             ctrlArea.appendChild(document.createElement('br'));
+             ctrlArea.appendChild(btnP);
+        }
+
+        if (showDetails) {
+            if (quizData.show_xem_loi_giai_all_button) {
+                const btnShowAll = document.getElementById('btnXemLGAll');
+                if(btnShowAll) { btnShowAll.style.display = 'inline-block'; btnShowAll.value = 'Xem Tất cả Lời giải'; }
+            }
+            if (quizData.show_xem_dap_an_button) {
+                const btnShowAns = document.getElementById('btnXemDA');
+                if(btnShowAns) { btnShowAns.style.display = 'inline-block'; btnShowAns.disabled = false; }
+            }
+        }
+    }
+
+    function submitResults(force = false, reason = "") {
+        if (quizSubmitted) return;
+        isSubmitting = true;
+        if (noSleep) { noSleep.disable(); }
+
+        const att = parseInt(localStorage.getItem(storageKeyAttempts)||'0') + 1;
+        localStorage.setItem(storageKeyAttempts, att);
+        const res = _calculateResults(); // Chấm điểm ngay lập tức (Offline)
+
+        if (!force) {
+             let unanswered = [];
+             shuffledQuestionOrder.forEach((qId, index) => {
+                const type = quizData.questionTypes[qId];
+                let hasAnswer = false;
+                const div = document.getElementById(`QuestID${qId.substring(1)}`);
+                if (div) {
+                    if (type === 'mc') { if (div.querySelector('input:checked')) hasAnswer = true; }
+                    else if (type === 'sa') { if (document.getElementById(qId).value.trim() !== "") hasAnswer = true; }
+                    else if (type === 'tf') {
+                        const items = div.querySelectorAll('.tf-option-item');
+                        let checkedCount = 0;
+                        items.forEach(item => { if(item.querySelector('input:checked')) checkedCount++; });
+                        if(checkedCount === items.length) hasAnswer = true;
+                    } else { hasAnswer = true; }
+                }
+                if (!hasAnswer) unanswered.push(index + 1);
+             });
+             if (unanswered.length > 0) {
+                 const msg = "Bạn chưa làm các câu: " + unanswered.join(", ") + "\nBạn có chắc muốn nộp bài không?";
+                 if (!confirm(msg)) {
+                     isSubmitting = false;
+                     return false;
+                 }
+             }
+        }
+
+        const totalSeconds = quizData.timeLimitMinutes * 60;
+        const timeSpentSeconds = Math.max(0, totalSeconds - timeLeftSeconds);
+        const spentM = Math.floor(timeSpentSeconds / 60);
+        const spentS = timeSpentSeconds % 60;
+        const timeSpentStr = `${spentM}:${spentS.toString().padStart(2, '0')}`;
+
+        if (!force && quizData.minSubmissionMinutes > 0) {
+            if (spentM < quizData.minSubmissionMinutes) {
+                alert(`Bạn phải làm bài ít nhất ${quizData.minSubmissionMinutes} phút. Vui lòng kiểm tra lại bài.`);
+                isSubmitting = false;
+                return false;
+            }
+        }
+
+        // --- 1. HIỆN KẾT QUẢ NGAY LẬP TỨC (OFFLINE) CHO HỌC SINH XEM ---
+        quizSubmitted = true; clearInterval(timerInterval);
+        document.getElementById('thoigian').textContent = "Đã nộp";
+        _displayResultsOnPage(res.score, res.userAnswersMap, true);
+        const btnSub = document.getElementById('btnSubmit');
+        if(btnSub) btnSub.style.display = 'none';
+        const status = document.getElementById('submitStatus');
+        if(status) { status.style.display='block'; status.textContent = `Điểm của bạn: ${res.score} điểm. Đang đồng bộ lên hệ thống...`; }
+        document.getElementById('cheat-overlay').style.display = 'none';
+
+        // --- 2. ÂM THẦM GỬI ĐIỂM VÀ THỜI GIAN LÊN GOOGLE SHEETS ---
+        if (quizData.googleSheetURL) {
+             let keyDapAnString = ""; let questionOrderString = "";
+             for (let i = 0; i < shuffledQuestionOrder.length; i++) {
+                 const qId = shuffledQuestionOrder[i];
+                 keyDapAnString += (shuffledAnswers[qId] || "?");
+                 questionOrderString += qId;
+                 if (i < shuffledQuestionOrder.length - 1) { keyDapAnString += "; "; questionOrderString += ";"; }
+             }
+
+             let finalNote = reason ? ` (${reason})` : "";
+             const hoTen = (document.getElementById('nameField') ? document.getElementById('nameField').value : 'N/A') + finalNote;
+             const lop = document.getElementById('lopField') ? document.getElementById('lopField').value : 'N/A';
+             const sbd = document.getElementById('sbdField') ? document.getElementById('sbdField').value : '';
+
+             const formData = new FormData();
+             formData.append('action', 'submit_score');
+             formData.append('HoTen', hoTen);
+             formData.append('Lop', lop);
+             formData.append('SBD', sbd);
+             formData.append('DiemSo', res.score);
+             formData.append('ThoiGianLamBai', timeSpentStr);
+             formData.append('ChuoiDapAn', res.answersString);
+             formData.append('TenDe', quizData.tenDe);
+             formData.append('SoLanThoat', violationCount.toString());
+             formData.append('KeyDapAn', keyDapAnString);
+             formData.append('DanhSachCauHoi', questionOrderString);
+
+             fetch(quizData.googleSheetURL, { method: 'POST', body: formData })
+             .then(r => r.json())
+             .then(data => {
+                 if(status) { status.style.color = 'green'; status.textContent = `Hệ thống đã ghi nhận: ${res.score} điểm.`; }
+             })
+             .catch(err => {
+                 if(status) { status.style.color = '#d32f2f'; status.textContent = `Điểm của bạn là ${res.score}. (Đang làm offline/Mất mạng nên không lưu lên bảng xếp hạng)`; }
+             });
+        }
+        return false;
+    }
+    function showAnswers() {
+        const t = document.getElementById('txtDapAn');
+        if(t) t.style.display = (t.style.display === 'none') ? 'block' : 'none';
+    }
+    
+    function toggleSolution(qId) {
+        const div = document.getElementById(`lgc${qId.substring(1)}`);
+        if(div) {
+            const isHidden = (div.style.display === 'none');
+            div.style.display = isHidden ? 'block' : 'none';
+            const btn = document.getElementById(`btlgc${qId.substring(1)}`);
+            if(btn) btn.textContent = isHidden ? 'Ẩn lời giải' : 'Xem lời giải';
+        }
+    }
+    
+    function toggleItemSolution(divId, btnId) {
+        const d = document.getElementById(divId);
+        const b = document.getElementById(btnId);
+        if(d && b) {
+             const isHidden = d.style.display === 'none';
+             d.style.display = isHidden ? 'block' : 'none';
+             b.textContent = isHidden ? 'Ẩn giải thích' : 'Xem giải thích';
+        }
+    }
+    
+    function toggleAllSolutions() {
+        let anyHidden = false;
+        document.querySelectorAll('.loigiai').forEach(d => { if (d.style.display === 'none') anyHidden = true; });
+        const newState = anyHidden ? 'block' : 'none';
+        const newBtnText = anyHidden ? 'Ẩn Tất cả Lời giải' : 'Xem Tất cả Lời giải';
+        document.querySelectorAll('.loigiai').forEach(d => d.style.display = newState);
+        const btnAll = document.getElementById('btnXemLGAll');
+        if(btnAll) btnAll.value = newBtnText;
+        document.querySelectorAll('.btn-xem-lg-cau').forEach(btn => { btn.textContent = anyHidden ? 'Ẩn lời giải' : 'Xem lời giải'; });
+        document.querySelectorAll('.btn-xem-lg-cau-item').forEach(btn => { btn.textContent = anyHidden ? 'Ẩn giải thích' : 'Xem giải thích'; });
+    }
+
+    const styles = `
+        body { margin: 15px; background-color: #fdf5e6; font-family: 'Times New Roman', 'Segoe UI', sans-serif; }
+        #question-nav { display: flex; flex-wrap: wrap; gap: 8px; }
+        .nav-button { padding: 6px 12px; border: 1px solid #d3b8ae; background-color: #fff8f0; cursor: pointer; text-align: center; border-radius: 4px; font-size: 0.9em; transition: all 0.2s; min-width: 45px; box-sizing: border-box; color: #5d4037; font-family: inherit; }
+        .nav-button:hover { background-color: #f5eadd; border-color: #bfa89f; }
+        .answered-nav-button { background-color: #d1c4e9; border-color: #b39ddb; color: #311b92; }
+        .active-nav-button { background-color: #007bff !important; color: white !important; border-color: #0056b3 !important; font-weight: bold; }
+         .rchc { background-color: #e8f5e9; border-left: 3px solid #4caf50; padding-left: 5px; }
+         .correct-mc-choice { color: #2e7d32; font-weight: bold; }
+         .correct-tf-choice { color: #2e7d32; font-weight: bold; }
+        .loigiai { display: none; margin-top: 10px; padding: 10px; border-top: 1px dashed #aaa; background-color: #f9f9f9; }
+        .check-mark { font-weight: bold; margin-left: 5px; }
+        .btnNopBaiCSS, .btnCtrlCSS, .btnPrintCSS { border: none; border-radius: 4px; color: white; padding: 8px 15px; margin: 3px; cursor: pointer; transition: background-color 0.2s; display: inline-block; font-family: inherit; }
+        .btnNopBaiCSS { background-color: #28a745; }
+        .btnCtrlCSS { background-color: #673ab7; }
+        .btnPrintCSS { background-color: #007bff; font-weight: bold; font-size: 1.05em; box-shadow: 0 4px 6px rgba(0,0,0,0.2); } 
+        .bgclr { background-color: #e3f2fd; color: #0d47a1; font-weight: bold; resize: none; border: 1px solid #90caf9; padding: 5px; border-radius: 3px; font-family: inherit;}
+        #quiz-timer-bar { background-color: #ffe0b2 !important; border-bottom-color: #ffcc80 !important; }
+        
+        #cheat-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255, 0, 0, 0.95); z-index: 999999; 
+            display: none; justify-content: center; align-items: center; flex-direction: column;
+            color: white; text-align: center; padding: 20px; box-sizing: border-box;
+        }
+        #cheat-box { 
+            background: white; color: #333; padding: 30px; border-radius: 10px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-width: 90%; width: 400px;
+        }
+        .cheat-btn {
+            background: #d32f2f; color: white; border: none; padding: 10px 20px; 
+            font-size: 1.1em; border-radius: 5px; cursor: pointer; margin-top: 20px;
+        }
+        .cheat-btn:hover { background: #b71c1c; }
+
+        #block-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        #inapp-warning { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 99999; color: white; text-align: center; padding-top: 15vh; box-sizing: border-box;}
+        #inapp-instruction { background: #333; padding: 25px; border-radius: 15px; display: inline-block; max-width: 85%; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .arrow-up-right { position: absolute; top: 15px; right: 20px; font-size: 50px; color: #ffeb3b; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @media print {
+            #question-nav-container, #controls-area, .btnNopBaiCSS, .btnCtrlCSS, .btnPrintCSS, #quiz-timer-bar { display: none !important; }
+            .loigiai, .check-mark { display: none !important; }
+            .cauhoi { display: block !important; page-break-inside: avoid; border-bottom: 1px solid #ccc; margin-bottom: 15px; padding-bottom: 15px;}
+        }
+    `;
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = styles;
+    document.head.appendChild(styleSheet);
+</script>
+
+</body>
+</html>
