@@ -8,7 +8,7 @@
         :root { --primary: #4F46E5; --primary-hover: #4338CA; --bg: #F3F4F6; --card-bg: #FFFFFF; --text-main: #1F2937; --text-muted: #6B7280; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text-main); }
         
-        /* === HEADER & ĐỒNG HỒ ĐẾM NGƯỢC (Đã fix lỗi đè giao diện) === */
+        /* === HEADER & ĐỒNG HỒ ĐẾM NGƯỢC === */
         .header { background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%); color: white; padding: 30px 15px; text-align: center; }
         .header h1 { margin: 0; font-size: clamp(1.4em, 4vw, 2.5em); text-shadow: 1px 1px 3px rgba(0,0,0,0.2); line-height: 1.3; }
         .header p { margin-top: 10px; font-size: clamp(0.9em, 2.5vw, 1.1em); opacity: 0.9; }
@@ -20,27 +20,46 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             display: inline-block; border: 2px solid rgba(255,255,255,0.2);
         }
-        .countdown-container h2 { margin: 0 0 10px 0; font-size: clamp(0.9em, 3vw, 1.2em); text-transform: uppercase; letter-spacing: 0.5px; }
+        .countdown-container h2 { margin: 0 0 8px 0; font-size: clamp(0.85em, 2.5vw, 1em); text-transform: uppercase; letter-spacing: 0.5px; }
         #countdown { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
         .time-box {
             background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
-            padding: 5px 10px; border-radius: 8px; min-width: 50px;
+            padding: 4px 8px; border-radius: 6px; min-width: 45px;
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .time-box span { display: block; font-size: clamp(1.4em, 5vw, 2em); font-weight: 800; line-height: 1; margin-bottom: 3px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-        .time-box small { font-size: 0.7em; text-transform: uppercase; font-weight: 600; opacity: 0.9; }
+        .time-box span { display: block; font-size: clamp(1.2em, 4vw, 1.6em); font-weight: 800; line-height: 1; margin-bottom: 3px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        .time-box small { font-size: 0.65em; text-transform: uppercase; font-weight: 600; opacity: 0.9; }
+
+        /* === BẢNG LỊCH THI TNTHPT (THIẾT KẾ COMPACT NHỎ GỌN) === */
+        .schedule-container { max-width: 900px; margin: 20px auto 20px auto; padding: 0 15px; position: relative; z-index: 10; }
+        .schedule-card { background: var(--card-bg); border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #E5E7EB; }
+        .schedule-title { text-align: center; color: var(--primary); margin: 0 0 12px 0; font-size: 1.1em; font-weight: 700; text-transform: uppercase; }
+        .table-responsive { overflow-x: auto; border-radius: 6px; border: 1px solid #E5E7EB; }
+        .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 0.85em; } /* Font nhỏ gọn hơn */
+        .schedule-table th, .schedule-table td { border: 1px solid #E5E7EB; padding: 8px 10px; text-align: center; vertical-align: middle; } /* Padding nhỏ hơn */
+        .schedule-table th { background-color: var(--primary); color: white; font-weight: 600; white-space: nowrap; padding: 10px; }
+        .schedule-table tr:nth-child(even) { background-color: #F9FAFB; }
+        .schedule-table tr:hover { background-color: #EEF2FF; transition: 0.2s; }
+        .date-cell { font-weight: bold; color: #1F2937; background-color: #EFF6FF; white-space: nowrap; }
+        .session-cell { font-weight: bold; color: #4B5563; font-size: 0.9em; }
+        .text-left { text-align: left !important; }
+        .text-note { font-size: 0.95em; color: #374151; }
+        .subject-badge { display: inline-block; padding: 4px 10px; border-radius: 15px; color: white; font-weight: bold; font-size: 0.9em; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .bg-van { background: linear-gradient(135deg, #EC4899, #DB2777); }
+        .bg-toan { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+        .bg-tuchon { color: #10B981; font-weight: 700; font-size: 0.95em; }
 
         /* === KHUNG DANH SÁCH ĐỀ THI === */
-        .container { max-width: 1200px; margin: 30px auto 40px auto; padding: 0 15px; position: relative; z-index: 10; }
+        .container { max-width: 1200px; margin: 0 auto 40px auto; padding: 0 15px; position: relative; z-index: 10; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         .card { background: var(--card-bg); border-radius: 16px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #E5E7EB; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); border-color: #A5B4FC; }
-        .card-title { font-size: 1.2em; font-weight: 700; color: var(--primary); margin: 0 0 15px 0; border-bottom: 2px solid #EEF2FF; padding-bottom: 10px; line-height: 1.4; }
-        .stat-row { display: flex; align-items: center; margin-bottom: 10px; font-size: 0.95em; color: var(--text-muted); }
+        .card-title { font-size: 1.15em; font-weight: 700; color: var(--primary); margin: 0 0 15px 0; border-bottom: 2px solid #EEF2FF; padding-bottom: 10px; line-height: 1.4; }
+        .stat-row { display: flex; align-items: center; margin-bottom: 10px; font-size: 0.9em; color: var(--text-muted); }
         .stat-row i { width: 24px; color: #8B5CF6; text-align: center; margin-right: 8px; }
         .stat-value { font-weight: 600; color: var(--text-main); margin-left: auto; text-align: right; }
         .ky-luc-badge { background: #FEF3C7; color: #D97706; padding: 4px 8px; border-radius: 6px; font-size: 0.85em; font-weight: bold; }
-        .btn-start { margin-top: auto; padding: 12px; background-color: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 8px; font-weight: 600; display: block; transition: all 0.2s; }
+        .btn-start { margin-top: auto; padding: 10px; background-color: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 8px; font-weight: 600; display: block; transition: all 0.2s; font-size: 0.95em; }
         .btn-start:hover { background-color: var(--primary-hover); transform: scale(1.02); }
     </style>
 </head>
@@ -62,6 +81,71 @@
         </div>
     </div>
     
+    <div class="schedule-container">
+        <div class="schedule-card">
+            <h2 class="schedule-title"><i class="far fa-calendar-check"></i> Lịch Thi Tốt Nghiệp THPT 2026</h2>
+            <div class="table-responsive">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Ngày</th>
+                            <th>Buổi</th>
+                            <th colspan="2">Bài thi/Môn thi</th>
+                            <th>Thời gian<br>làm bài</th>
+                            <th>Giờ phát đề</th>
+                            <th>Giờ bắt đầu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2" class="date-cell">10/6/2026</td>
+                            <td class="session-cell">SÁNG</td>
+                            <td colspan="5" class="text-left text-note"><strong>08h00:</strong> Họp cán bộ làm công tác coi thi tại Điểm thi</td>
+                        </tr>
+                        <tr>
+                            <td class="session-cell">CHIỀU</td>
+                            <td colspan="5" class="text-left text-note"><strong>14h00:</strong> Thí sinh làm thủ tục dự thi, đính chính sai sót (nếu có) và nghe phổ biến Quy chế thi</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="date-cell">11/6/2026</td>
+                            <td class="session-cell">SÁNG</td>
+                            <td colspan="2"><span class="subject-badge bg-van"><i class="fas fa-book-open"></i> Ngữ văn</span></td>
+                            <td>120 phút</td>
+                            <td>07h30</td>
+                            <td>07h35</td>
+                        </tr>
+                        <tr>
+                            <td class="session-cell">CHIỀU</td>
+                            <td colspan="2"><span class="subject-badge bg-toan"><i class="fas fa-square-root-alt"></i> Toán</span></td>
+                            <td>90 phút</td>
+                            <td>14h20</td>
+                            <td>14h30</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="date-cell">12/6/2026</td>
+                            <td rowspan="2" class="session-cell">SÁNG</td>
+                            <td rowspan="2" class="bg-tuchon">Bài thi<br>tự chọn</td>
+                            <td>Môn thứ 1</td>
+                            <td>50 phút</td>
+                            <td>07h30</td>
+                            <td>07h35</td>
+                        </tr>
+                        <tr>
+                            <td>Môn thứ 2</td>
+                            <td>50 phút</td>
+                            <td>08h35</td>
+                            <td>08h40</td>
+                        </tr>
+                        <tr>
+                            <td class="date-cell">13/6/2026</td>
+                            <td colspan="6" style="color: #D97706; font-weight: bold; letter-spacing: 1px;">DỰ PHÒNG</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="grid" id="test-grid"></div>
     </div>
@@ -102,7 +186,8 @@
             { fileName: 'DE6_final_interactive.html', displayName: 'Đề Khảo sát chất lượng - THPT Lê Thánh Tông - TP.HCM', date: '21/03/2026' },
             { fileName: 'DE7_final_interactive.html', displayName: 'CỤM TRƯỜNG THPT HÀ TĨNH - L1', date: '22/03/2026' },
             { fileName: 'DE8_final_interactive.html', displayName: 'Cụm trường THPT QV1-TT1-LVT - BẮC NINH (LẦN 1)', date: '22/03/2026' },
-            { fileName: 'de-nb_interactive.html', displayName: 'ĐỀ SỞ NINH BÌNH LẦN THỨ 2', date: '22/03/2026' } ];
+            { fileName: 'TN2025_interactive.html', displayName: 'ĐỀ THI TNTHPTQG2025 CHÍNH THỨC', date: '22/03/2026' },
+            { fileName: 'de-nb_interactive.html', displayName: 'ĐỀ KHẢO SÁT, ĐÁNH GIÁ CHẤT LƯỢNG GIÁO DỤC LỚP 12  LẦN THỨ HAI  NINH BÌNH- NĂM HỌC 2025-2026', date: '22/03/2026' } ];
         /* ========================================= */
         
         const CACHE_KEY = "quiz_stats_cache_v5";
