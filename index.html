@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Ôn Thi - Thầy Tráng</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --primary: #4F46E5; --primary-hover: #4338CA; --bg: #F3F4F6; --card-bg: #FFFFFF; --text-main: #1F2937; --text-muted: #6B7280; }
@@ -35,8 +36,8 @@
         .schedule-card { background: var(--card-bg); border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #E5E7EB; }
         .schedule-title { text-align: center; color: var(--primary); margin: 0 0 12px 0; font-size: 1.1em; font-weight: 700; text-transform: uppercase; }
         .table-responsive { overflow-x: auto; border-radius: 6px; border: 1px solid #E5E7EB; }
-        .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 0.85em; } /* Font nhỏ gọn hơn */
-        .schedule-table th, .schedule-table td { border: 1px solid #E5E7EB; padding: 8px 10px; text-align: center; vertical-align: middle; } /* Padding nhỏ hơn */
+        .schedule-table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 0.85em; } 
+        .schedule-table th, .schedule-table td { border: 1px solid #E5E7EB; padding: 8px 10px; text-align: center; vertical-align: middle; }
         .schedule-table th { background-color: var(--primary); color: white; font-weight: 600; white-space: nowrap; padding: 10px; }
         .schedule-table tr:nth-child(even) { background-color: #F9FAFB; }
         .schedule-table tr:hover { background-color: #EEF2FF; transition: 0.2s; }
@@ -190,7 +191,7 @@
             { fileName: 'de-nb_interactive.html', displayName: 'ĐỀ SỞ NINH BÌNH LẦN 2', date: '22/03/2026' } ];
         /* ========================================= */
         
-        const CACHE_KEY = "quiz_stats_cache_v6";
+        const CACHE_KEY = "quiz_stats_cache_v6"; // Đã đổi tên thành v6 để xóa cache cũ
         const grid = document.getElementById('test-grid');
         
         tests.forEach(test => {
@@ -232,43 +233,21 @@
 
         async function fetchStatsSilently() {
             try {
-                const response = await fetch(GOOGLE_SHEET_URL);
+                // Đã chèn tham số ?action=get_thongke để đọc trực tiếp dữ liệu siêu nhẹ từ tab ThongKe
+                const response = await fetch(GOOGLE_SHEET_URL + "?action=get_thongke");
                 const json = await response.json();
                 if (json.result === 'success') {
-                    const data = json.data; let statsMap = {};
+                    const data = json.data; 
+                    let statsMap = {};
                     
                     data.forEach(row => {
-                        let rawTenDe = row['TenDe'] || row['Tên Đề'] || ''; 
-                        if (rawTenDe) {
-                            let key = String(rawTenDe).trim().toLowerCase();
-                            
-                            if (!statsMap[key]) statsMap[key] = { count: 0, topScore: -1, topTime: 999999, topName: '' };
-                            statsMap[key].count++; 
-                            
-                            let diem = parseFloat(row['DiemSo']) || 0;
-                            let hoTen = String(row['HoTen'] || 'Ẩn danh');
-                            let timeStr = String(row['ThoiGianLamBai'] || '');
-                            
-                            // LOGIC ÂM THẦM DỊCH THỜI GIAN (Xử lý mượt mà cả chuỗi 1899-12... của Google Sheets)
-                            let timeSecs = 999999;
-                            if (timeStr.includes('T')) {
-                                let d = new Date(timeStr);
-                                if (!isNaN(d.getTime())) {
-                                    timeSecs = d.getUTCHours() * 3600 + d.getUTCMinutes() * 60 + d.getUTCSeconds();
-                                }
-                            } else {
-                                let parts = timeStr.split(':').reverse(); // Tách giây, phút, giờ
-                                if (parts.length >= 2) { 
-                                    timeSecs = (parseInt(parts[0])||0) + (parseInt(parts[1])||0)*60 + (parseInt(parts[2])||0)*3600; 
-                                }
-                            }
-
-                            // SO SÁNH: Điểm cao hơn, hoặc Điểm bằng nhưng Thời gian ít hơn
-                            if (diem > statsMap[key].topScore || (diem === statsMap[key].topScore && timeSecs < statsMap[key].topTime)) {
-                                statsMap[key].topScore = diem;
-                                statsMap[key].topTime = timeSecs;
-                                statsMap[key].topName = hoTen; // Giữ lại nguyên vẹn Full Họ Tên
-                            }
+                        if (row.TenDe) {
+                            let key = String(row.TenDe).trim().toLowerCase();
+                            statsMap[key] = { 
+                                count: row.LuotLam || 0, 
+                                topScore: row.DiemKyLuc || 0, 
+                                topName: row.TenKyLuc || 'Chưa có'
+                            };
                         }
                     });
                     
