@@ -9,29 +9,18 @@
         :root { --primary: #4F46E5; --primary-hover: #4338CA; --bg: #F3F4F6; --card-bg: #FFFFFF; --text-main: #1F2937; --text-muted: #6B7280; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text-main); }
         
-        /* === HEADER & ĐỒNG HỒ ĐẾM NGƯỢC === */
         .header { background: linear-gradient(135deg, #4F46E5 0%, #3B82F6 100%); color: white; padding: 30px 15px; text-align: center; }
         .header h1 { margin: 0; font-size: clamp(1.4em, 4vw, 2.5em); text-shadow: 1px 1px 3px rgba(0,0,0,0.2); line-height: 1.3; }
         .header p { margin-top: 10px; font-size: clamp(0.9em, 2.5vw, 1.1em); opacity: 0.9; }
         
         .countdown-wrapper { display: flex; justify-content: center; margin-top: 25px; margin-bottom: 10px; }
-        .countdown-container {
-            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
-            color: white; padding: 15px 20px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: inline-block; border: 2px solid rgba(255,255,255,0.2);
-        }
+        .countdown-container { background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); color: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: inline-block; border: 2px solid rgba(255,255,255,0.2); }
         .countdown-container h2 { margin: 0 0 8px 0; font-size: clamp(0.85em, 2.5vw, 1em); text-transform: uppercase; letter-spacing: 0.5px; }
         #countdown { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-        .time-box {
-            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
-            padding: 4px 8px; border-radius: 6px; min-width: 45px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
+        .time-box { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px); padding: 4px 8px; border-radius: 6px; min-width: 45px; border: 1px solid rgba(255,255,255,0.2); }
         .time-box span { display: block; font-size: clamp(1.2em, 4vw, 1.6em); font-weight: 800; line-height: 1; margin-bottom: 3px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
         .time-box small { font-size: 0.65em; text-transform: uppercase; font-weight: 600; opacity: 0.9; }
 
-        /* === BẢNG LỊCH THI TNTHPT (THIẾT KẾ COMPACT NHỎ GỌN) === */
         .schedule-container { max-width: 900px; margin: 20px auto 20px auto; padding: 0 15px; position: relative; z-index: 10; }
         .schedule-card { background: var(--card-bg); border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #E5E7EB; }
         .schedule-title { text-align: center; color: var(--primary); margin: 0 0 12px 0; font-size: 1.1em; font-weight: 700; text-transform: uppercase; }
@@ -50,7 +39,25 @@
         .bg-toan { background: linear-gradient(135deg, #3B82F6, #2563EB); }
         .bg-tuchon { color: #10B981; font-weight: 700; font-size: 0.95em; }
 
-        /* === KHUNG DANH SÁCH ĐỀ THI === */
+        .stats-overview-container { max-width: 900px; margin: 0 auto 20px auto; padding: 0 15px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .stats-box { border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 20px; flex: 1; min-width: 250px; max-width: 350px; transition: transform 0.2s, box-shadow 0.2s; color: white; border: none; }
+        .box-exam { background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%); box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4); }
+        .box-users { background: linear-gradient(135deg, #10B981 0%, #047857 100%); box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4); }
+        .stats-box:hover { transform: translateY(-5px); }
+        .box-exam:hover { box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.6); }
+        .box-users:hover { box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.6); }
+        .stats-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.8em; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .stats-text { display: flex; flex-direction: column; }
+        .stats-label { font-size: 0.95em; color: rgba(255, 255, 255, 0.9); font-weight: 700; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px; }
+        .stats-number { font-size: 2.2em; font-weight: 800; color: #FFFFFF; line-height: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+
+        /* CSS MỚI CHO THANH CHỮ CHẠY CỰC MƯỢT */
+        .announcement-container { max-width: 1200px; margin: 0 auto 30px auto; padding: 0 15px; }
+        .announcement-bar { background: linear-gradient(90deg, #F59E0B, #EF4444); color: white; padding: 12px 15px; font-size: 1.1em; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 12px; overflow: hidden; white-space: nowrap; display: flex; align-items: center; }
+        .marquee-text { display: inline-block; padding-left: 100%; animation: scrollText 20s linear infinite; }
+        .marquee-text:hover { animation-play-state: paused; cursor: pointer; }
+        @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
         .container { max-width: 1200px; margin: 0 auto 40px auto; padding: 0 15px; position: relative; z-index: 10; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         .card { background: var(--card-bg); border-radius: 16px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #E5E7EB; }
@@ -81,7 +88,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="schedule-container">
         <div class="schedule-card">
             <h2 class="schedule-title"><i class="far fa-calendar-check"></i> Lịch Thi Tốt Nghiệp THPT 2026</h2>
@@ -147,12 +154,36 @@
         </div>
     </div>
 
+    <div class="stats-overview-container">
+        <div class="stats-box box-exam">
+            <div class="stats-icon"><i class="fas fa-file-alt"></i></div>
+            <div class="stats-text">
+                <span class="stats-label">Tổng số đề</span>
+                <span class="stats-number" id="global-total-exams">0</span>
+            </div>
+        </div>
+        <div class="stats-box box-users">
+            <div class="stats-icon"><i class="fas fa-users"></i></div>
+            <div class="stats-text">
+                <span class="stats-label">Tổng lượt làm bài</span>
+                <span class="stats-number" id="global-total-attempts">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="announcement-container">
+        <div class="announcement-bar">
+            <div class="marquee-text" id="vinh-danh-marquee">
+                <i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🌟 Đang cập nhật Bảng Vàng Kỷ Lục...
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="grid" id="test-grid"></div>
     </div>
 
     <script>
-        /* === 1. THIẾT LẬP NGÀY THI TN THPT (Năm-Tháng-Ngày) === */
         const EXAM_DATE = new Date("2026-06-11T00:00:00").getTime();
 
         function updateCountdown() {
@@ -177,7 +208,6 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        /* === 2. TỪ KHÓA BÍ MẬT CỦA TOOL PYTHON === */
         const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwjmFgI2ZE1Sw81eMrfTh-pfsmUz7T_SlDWhYCBh7abslC-Q4DyLnceZc-Kl8y4pcCJSQ/exec";
         const tests = [ { fileName: 'DE1_final - Copy_interactive.html', displayName: 'THPT YÊN MÔ B - NINH BÌNH', date: '23/03/2026' },
             { fileName: 'DE2_final - Copy_interactive.html', displayName: 'THPT CHUYÊN ĐH KHTN HÀ NỘI', date: '23/03/2026' },
@@ -190,11 +220,12 @@
             { fileName: 'DE9_final_interactive.html', displayName: 'CỤM TRƯỜNG THPT-SỞ HẢI PHÒNG', date: '23/03/2026' },
             { fileName: 'TN2025_interactive.html', displayName: 'ĐỀ THI TNTHPTQG2025 CHÍNH THỨC', date: '22/03/2026' },
             { fileName: 'de-nb_interactive.html', displayName: 'ĐỀ SỞ NINH BÌNH LẦN 2', date: '23/03/2026' } ];
-        /* ========================================= */
         
-        const CACHE_KEY = "quiz_stats_cache_v6"; // Đã đổi tên thành v6 để xóa cache cũ
+        const CACHE_KEY = "quiz_stats_cache_v12"; 
         const grid = document.getElementById('test-grid');
         
+        document.getElementById('global-total-exams').innerText = tests.length;
+
         tests.forEach(test => {
             const safeId = test.fileName.replace(/[^a-zA-Z0-9]/g, '_');
             const card = document.createElement('div');
@@ -209,7 +240,29 @@
             grid.appendChild(card);
         });
 
+        function updateVinhDanh(statsMap) {
+            let topStudents = new Set();
+            for (let key in statsMap) {
+                let stat = statsMap[key];
+                if (stat.topScore > 0 && stat.topName && stat.topName !== 'Chưa có' && stat.topName !== 'Ẩn danh' && stat.topName !== 'N/A') {
+                    topStudents.add(stat.topName);
+                }
+            }
+
+            const marqueeSpan = document.getElementById('vinh-danh-marquee');
+            if (marqueeSpan) {
+                if (topStudents.size > 0) {
+                    let danhSach = Array.from(topStudents).join(" ⭐ ");
+                    marqueeSpan.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i>🎉 VINH DANH CÁC KỶ LỤC GIA: ⭐ ${danhSach} ⭐ đã xuất sắc dẫn đầu các đề thi! 🏆`;
+                } else {
+                    marqueeSpan.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i>🌟 Chào mừng các sĩ tử! Hãy làm bài thật tốt để ghi danh vào Bảng Vàng Kỷ Lục nhé! 🏆`;
+                }
+            }
+        }
+
         function renderStats(statsMap) {
+            let totalAttempts = 0; 
+
             tests.forEach(test => {
                 const safeId = test.fileName.replace(/[^a-zA-Z0-9]/g, '_');
                 let searchKey = String(test.displayName).trim().toLowerCase();
@@ -220,13 +273,16 @@
                 
                 if (stat) {
                     spanLuot.innerText = stat.count + " lượt";
-                    // HIỂN THỊ: CHỈ ĐIỂM VÀ FULL HỌ TÊN NGƯỜI DÙNG (Giấu thời gian đi)
                     spanKyLuc.innerText = stat.topScore + "đ (" + stat.topName + ")"; 
+                    totalAttempts += (parseInt(stat.count) || 0); 
                 } else {
                     spanLuot.innerText = "0 lượt"; spanKyLuc.innerText = "Chưa có";
                     spanKyLuc.style.background = "#F3F4F6"; spanKyLuc.style.color = "#9CA3AF";
                 }
             });
+
+            document.getElementById('global-total-attempts').innerText = totalAttempts.toLocaleString('vi-VN');
+            updateVinhDanh(statsMap);
         }
 
         const cachedData = localStorage.getItem(CACHE_KEY);
@@ -234,7 +290,6 @@
 
         async function fetchStatsSilently() {
             try {
-                // Đã chèn tham số ?action=get_thongke để đọc trực tiếp dữ liệu siêu nhẹ từ tab ThongKe
                 const response = await fetch(GOOGLE_SHEET_URL + "?action=get_thongke");
                 const json = await response.json();
                 if (json.result === 'success') {
@@ -253,7 +308,7 @@
                     });
                     
                     localStorage.setItem(CACHE_KEY, JSON.stringify(statsMap));
-                    renderStats(statsMap);
+                    renderStats(statsMap); 
                 }
             } catch (error) {}
         }
