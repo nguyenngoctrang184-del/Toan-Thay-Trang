@@ -51,29 +51,21 @@
         .stats-label { font-size: 0.95em; color: rgba(255, 255, 255, 0.9); font-weight: 700; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px; }
         .stats-number { font-size: 2.2em; font-weight: 800; color: #FFFFFF; line-height: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
 
-        /* CSS CHO 2 THANH CHẠY NGƯỢC CHIỀU MÀU DỊU MẮT */
+        /* CSS TICKER: HIỆN LÊN GIỮA TRUNG TÂM RỒI DỪNG LẠI */
         .announcement-container { max-width: 1200px; margin: 0 auto 30px auto; padding: 0 15px; display: flex; flex-direction: column; gap: 12px; }
-        .announcement-bar { height: 48px; position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .announcement-bar { height: 48px; position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; justify-content: center; align-items: center; }
         
-        /* Màu sắc tương phản (Tone lạnh) */
-        .bar-exams { background: linear-gradient(90deg, #1E3A8A, #3B82F6); color: white; } /* Xanh dương đậm */
-        .bar-vinhdanh { background: linear-gradient(90deg, #0F766E, #14B8A6); color: white; } /* Xanh ngọc (Teal) - Dịu mắt */
+        .bar-exams { background: linear-gradient(90deg, #1E3A8A, #3B82F6); color: white; } 
+        .bar-vinhdanh { background: linear-gradient(90deg, #5B21B6, #8B5CF6); color: white; } /* Tím Violet */
 
-        .marquee-text { position: absolute; top: 0; height: 100%; display: flex; align-items: center; white-space: nowrap; font-size: 1.1em; font-weight: bold; padding: 0 20px; }
-        .marquee-text:hover { animation-play-state: paused; cursor: pointer; }
+        .ticker-content { position: absolute; white-space: nowrap; font-size: 1.1em; font-weight: bold; padding: 0 20px; opacity: 0; }
 
-        /* Animation: Phải sang Trái (RTL) */
-        .anim-rtl { animation: marqueeRTL 25s linear infinite; }
-        @keyframes marqueeRTL {
-            0% { left: 100%; transform: translateX(0); }
-            100% { left: 0%; transform: translateX(-100%); }
-        }
-
-        /* Animation: Trái sang Phải (LTR) */
-        .anim-ltr { animation: marqueeLTR 25s linear infinite; }
-        @keyframes marqueeLTR {
-            0% { right: 100%; transform: translateX(0); }
-            100% { right: 0%; transform: translateX(100%); }
+        /* Hiệu ứng trượt: Trượt vào giữa (10%), dừng ở giữa (từ 10% đến 90%), trượt ra ngoài (100%) */
+        @keyframes slideCenter {
+            0% { transform: translateX(100vw); opacity: 0; }
+            10% { transform: translateX(0); opacity: 1; }
+            90% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(-100vw); opacity: 0; }
         }
 
         .container { max-width: 1200px; margin: 0 auto 40px auto; padding: 0 15px; position: relative; z-index: 10; }
@@ -191,14 +183,14 @@
 
     <div class="announcement-container">
         <div class="announcement-bar bar-exams">
-            <div class="marquee-text anim-rtl" id="marquee-exams">
-                <i class="fas fa-book" style="margin-right: 10px; color: #93C5FD;"></i> Đang tải danh sách đề thi...
+            <div class="ticker-content" id="marquee-exams">
+                <i class="fas fa-book" style="margin-right: 10px; color: #93C5FD;"></i> Đang tải dữ liệu...
             </div>
         </div>
         
         <div class="announcement-bar bar-vinhdanh">
-            <div class="marquee-text anim-ltr" id="marquee-vinhdanh">
-                <i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🌟 Đang cập nhật Bảng Vàng Kỷ Lục...
+            <div class="ticker-content" id="marquee-vinhdanh">
+                <i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🌟 Đang cập nhật Kỷ Lục...
             </div>
         </div>
     </div>
@@ -267,30 +259,63 @@
         });
 
         function updateVinhDanh(statsMap) {
-            // CẬP NHẬT DÒNG 1: Danh sách đề thi
-            let danhSachDe = tests.map(test => test.displayName).join(" 🔥 ");
-            const marqueeExams = document.getElementById('marquee-exams');
-            if (marqueeExams && danhSachDe) {
-                marqueeExams.innerHTML = `<i class="fas fa-book" style="margin-right: 10px; color: #93C5FD;"></i> 📚 CÁC ĐỀ ĐANG CÓ: ${danhSachDe}`;
-            }
+            // Chuẩn bị mảng các đề thi
+            let examItems = tests.map(test => `<i class="fas fa-book" style="margin-right: 10px; color: #93C5FD;"></i> 📚 ĐỀ THI: ${test.displayName}`);
+            if (examItems.length === 0) examItems.push(`<i class="fas fa-book" style="margin-right: 10px; color: #93C5FD;"></i> 📚 ĐANG CẬP NHẬT ĐỀ THI...`);
 
-            // CẬP NHẬT DÒNG 2: Vinh danh kỷ lục
-            let topStudents = new Set();
+            // Chuẩn bị mảng các Kỷ lục gia
+            let recordItems = [];
             for (let key in statsMap) {
                 let stat = statsMap[key];
                 if (stat.topScore > 0 && stat.topName && stat.topName !== 'Chưa có' && stat.topName !== 'Ẩn danh' && stat.topName !== 'N/A') {
-                    topStudents.add(stat.topName);
+                    // Lấy tên rút gọn của đề
+                    let testObj = tests.find(t => String(t.displayName).trim().toLowerCase() === key || key.includes(String(t.displayName).trim().toLowerCase()));
+                    let dName = testObj ? testObj.displayName : "Đề thi";
+                    recordItems.push(`<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🎉 KỶ LỤC: ⭐ ${stat.topName} ⭐ đạt ${stat.topScore}đ (${dName}) 🏆`);
                 }
             }
+            if (recordItems.length === 0) {
+                recordItems.push(`<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🌟 Hãy làm bài thật tốt để ghi danh vào Bảng Vàng Kỷ Lục nhé! 🏆`);
+            }
 
-            const marqueeSpan = document.getElementById('marquee-vinhdanh');
-            if (marqueeSpan) {
-                if (topStudents.size > 0) {
-                    let danhSach = Array.from(topStudents).join(" ⭐ ");
-                    marqueeSpan.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🎉 VINH DANH CÁC KỶ LỤC GIA: ⭐ ${danhSach} ⭐ đã xuất sắc dẫn đầu các đề thi! 🏆`;
-                } else {
-                    marqueeSpan.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🌟 Chào mừng các sĩ tử! Hãy làm bài thật tốt để ghi danh vào Bảng Vàng Kỷ Lục nhé! 🏆`;
-                }
+            // Dọn dẹp interval cũ nếu có (tránh lỗi chạy lặp khi load lại hàm)
+            window.tickerExamsInterval && clearInterval(window.tickerExamsInterval);
+            window.tickerVinhDanhInterval && clearInterval(window.tickerVinhDanhInterval);
+            window.tickerVinhDanhTimeout && clearTimeout(window.tickerVinhDanhTimeout);
+
+            const duration = 6000; // 6 giây cho mỗi thông báo (đọc thoải mái)
+            
+            // Hàm chạy Ticker 1 (Đề thi)
+            const elExams = document.getElementById('marquee-exams');
+            if (elExams) {
+                let idx1 = 0;
+                const playExams = () => {
+                    elExams.innerHTML = examItems[idx1];
+                    elExams.style.animation = 'none';
+                    void elExams.offsetWidth; // Kích hoạt lại animation
+                    elExams.style.animation = `slideCenter ${duration}ms ease-in-out forwards`;
+                    idx1 = (idx1 + 1) % examItems.length;
+                };
+                playExams();
+                window.tickerExamsInterval = setInterval(playExams, duration);
+            }
+
+            // Hàm chạy Ticker 2 (Vinh danh) - lệch pha 3 giây
+            const elVinhDanh = document.getElementById('marquee-vinhdanh');
+            if (elVinhDanh) {
+                elVinhDanh.style.opacity = '0'; // Giữ vô hình trong lúc chờ delay
+                let idx2 = 0;
+                const playVinhDanh = () => {
+                    elVinhDanh.innerHTML = recordItems[idx2];
+                    elVinhDanh.style.animation = 'none';
+                    void elVinhDanh.offsetWidth;
+                    elVinhDanh.style.animation = `slideCenter ${duration}ms ease-in-out forwards`;
+                    idx2 = (idx2 + 1) % recordItems.length;
+                };
+                window.tickerVinhDanhTimeout = setTimeout(() => {
+                    playVinhDanh();
+                    window.tickerVinhDanhInterval = setInterval(playVinhDanh, duration);
+                }, duration / 2); // Khởi động sau 3 giây
             }
         }
 
