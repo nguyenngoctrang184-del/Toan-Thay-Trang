@@ -51,12 +51,30 @@
         .stats-label { font-size: 0.95em; color: rgba(255, 255, 255, 0.9); font-weight: 700; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px; }
         .stats-number { font-size: 2.2em; font-weight: 800; color: #FFFFFF; line-height: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
 
-        /* CSS MỚI CHO THANH CHỮ CHẠY CỰC MƯỢT */
-        .announcement-container { max-width: 1200px; margin: 0 auto 30px auto; padding: 0 15px; }
-        .announcement-bar { background: linear-gradient(90deg, #F59E0B, #EF4444); color: white; padding: 12px 15px; font-size: 1.1em; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 12px; overflow: hidden; white-space: nowrap; display: flex; align-items: center; }
-        .marquee-text { display: inline-block; padding-left: 100%; animation: scrollText 20s linear infinite; }
+        /* CSS CHO 2 THANH CHẠY NGƯỢC CHIỀU MÀU DỊU MẮT */
+        .announcement-container { max-width: 1200px; margin: 0 auto 30px auto; padding: 0 15px; display: flex; flex-direction: column; gap: 12px; }
+        .announcement-bar { height: 48px; position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        /* Màu sắc tương phản (Tone lạnh) */
+        .bar-exams { background: linear-gradient(90deg, #1E3A8A, #3B82F6); color: white; } /* Xanh dương đậm */
+        .bar-vinhdanh { background: linear-gradient(90deg, #0F766E, #14B8A6); color: white; } /* Xanh ngọc (Teal) - Dịu mắt */
+
+        .marquee-text { position: absolute; top: 0; height: 100%; display: flex; align-items: center; white-space: nowrap; font-size: 1.1em; font-weight: bold; padding: 0 20px; }
         .marquee-text:hover { animation-play-state: paused; cursor: pointer; }
-        @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* Animation: Phải sang Trái (RTL) */
+        .anim-rtl { animation: marqueeRTL 25s linear infinite; }
+        @keyframes marqueeRTL {
+            0% { left: 100%; transform: translateX(0); }
+            100% { left: 0%; transform: translateX(-100%); }
+        }
+
+        /* Animation: Trái sang Phải (LTR) */
+        .anim-ltr { animation: marqueeLTR 25s linear infinite; }
+        @keyframes marqueeLTR {
+            0% { right: 100%; transform: translateX(0); }
+            100% { right: 0%; transform: translateX(100%); }
+        }
 
         .container { max-width: 1200px; margin: 0 auto 40px auto; padding: 0 15px; position: relative; z-index: 10; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
@@ -172,8 +190,14 @@
     </div>
 
     <div class="announcement-container">
-        <div class="announcement-bar">
-            <div class="marquee-text" id="vinh-danh-marquee">
+        <div class="announcement-bar bar-exams">
+            <div class="marquee-text anim-rtl" id="marquee-exams">
+                <i class="fas fa-book" style="margin-right: 10px; color: #93C5FD;"></i> Đang tải danh sách đề thi...
+            </div>
+        </div>
+        
+        <div class="announcement-bar bar-vinhdanh">
+            <div class="marquee-text anim-ltr" id="marquee-vinhdanh">
                 <i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🌟 Đang cập nhật Bảng Vàng Kỷ Lục...
             </div>
         </div>
@@ -210,6 +234,7 @@
 
         const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwjmFgI2ZE1Sw81eMrfTh-pfsmUz7T_SlDWhYCBh7abslC-Q4DyLnceZc-Kl8y4pcCJSQ/exec";
         const tests = [ { fileName: 'DE10_final_interactive.html', displayName: 'THPT Nguyễn Khuyến - HCM', date: '24/03/2026' },
+            { fileName: 'DE12-SO-HUNG-YEN_interactive.html', displayName: 'SỞ GIÁO DỤC VÀ ĐÀO TẠO HƯNG YÊN LẦN 1', date: '25/03/2026' },
             { fileName: 'DE1_final - Copy_interactive.html', displayName: 'THPT YÊN MÔ B - NINH BÌNH', date: '23/03/2026' },
             { fileName: 'DE2_final - Copy_interactive.html', displayName: 'THPT CHUYÊN ĐH KHTN HÀ NỘI', date: '23/03/2026' },
             { fileName: 'DE3_final - Copy_interactive.html', displayName: 'Cụm liên trường Nghệ An lần 1', date: '23/03/2026' },
@@ -242,6 +267,14 @@
         });
 
         function updateVinhDanh(statsMap) {
+            // CẬP NHẬT DÒNG 1: Danh sách đề thi
+            let danhSachDe = tests.map(test => test.displayName).join(" 🔥 ");
+            const marqueeExams = document.getElementById('marquee-exams');
+            if (marqueeExams && danhSachDe) {
+                marqueeExams.innerHTML = `<i class="fas fa-book" style="margin-right: 10px; color: #93C5FD;"></i> 📚 CÁC ĐỀ ĐANG CÓ: ${danhSachDe}`;
+            }
+
+            // CẬP NHẬT DÒNG 2: Vinh danh kỷ lục
             let topStudents = new Set();
             for (let key in statsMap) {
                 let stat = statsMap[key];
@@ -250,13 +283,13 @@
                 }
             }
 
-            const marqueeSpan = document.getElementById('vinh-danh-marquee');
+            const marqueeSpan = document.getElementById('marquee-vinhdanh');
             if (marqueeSpan) {
                 if (topStudents.size > 0) {
                     let danhSach = Array.from(topStudents).join(" ⭐ ");
-                    marqueeSpan.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i>🎉 VINH DANH CÁC KỶ LỤC GIA: ⭐ ${danhSach} ⭐ đã xuất sắc dẫn đầu các đề thi! 🏆`;
+                    marqueeSpan.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🎉 VINH DANH CÁC KỶ LỤC GIA: ⭐ ${danhSach} ⭐ đã xuất sắc dẫn đầu các đề thi! 🏆`;
                 } else {
-                    marqueeSpan.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i>🌟 Chào mừng các sĩ tử! Hãy làm bài thật tốt để ghi danh vào Bảng Vàng Kỷ Lục nhé! 🏆`;
+                    marqueeSpan.innerHTML = `<i class="fas fa-bullhorn" style="margin-right: 10px; color: #FEF3C7;"></i> 🌟 Chào mừng các sĩ tử! Hãy làm bài thật tốt để ghi danh vào Bảng Vàng Kỷ Lục nhé! 🏆`;
                 }
             }
         }
