@@ -42,8 +42,34 @@
         table.td, th.td, td.td { border: 0px; text-align: center; background-color: rgba(0, 0, 0, 0); }
         table, th, td { margin: 7px; border: 1px solid #FFFFFF; border-collapse: collapse; background-color: #D3D3D3; padding: 5px 10px; }
         body { font-family: 'Times New Roman', serif; margin: 10px; }
-        img { max-width: 100%; height: auto; }
+        
+        /* === MỚI: CSS CHO TÍNH NĂNG PHÓNG TO ẢNH === */
+        img { max-width: 100%; height: auto; cursor: zoom-in; }
+        #imageModal {
+            display: none; position: fixed; z-index: 9999; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.8);
+            text-align: center;
+        }
+        #modalImg {
+            margin: auto; display: block; max-width: 95%; max-height: 95%;
+            position: relative; top: 50%; transform: translateY(-50%);
+            object-fit: contain; cursor: zoom-out;
+        }
+        /* =========================================== */
     </style>
+    
+    <script>
+        $(document).ready(function() {
+            $('body').append('<div id="imageModal"><img id="modalImg"></div>');
+            $('img').not('#modalImg').on('click', function() {
+                $('#modalImg').attr('src', $(this).attr('src'));
+                $('#imageModal').fadeIn(200);
+            });
+            $('#imageModal').on('click', function() {
+                $(this).fadeOut(200);
+            });
+        });
+    </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML' type='text/javascript'></script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -1181,15 +1207,15 @@
 
 <script>
     const quizData = {
-    "examId": "0d53e348-3bf1-49ff-b215-465ca245ef91",
+    "examId": "e3bfcce6-024d-4bc2-a12f-e519c364a3c8",
     "timeLimitMinutes": 90,
     "minSubmissionMinutes": 0,
     "checkDeviceTime": true,
     "timeErrorMarginMinutes": 1,
     "enableStartTime": false,
-    "startTime": "2026-03-29T15:10:00",
+    "startTime": "2026-03-29T15:29:00",
     "enableEndTime": false,
-    "endTime": "2026-03-29T16:40:00",
+    "endTime": "2026-03-29T16:59:00",
     "showHomepageOnGate": true,
     "homepageURL": "",
     "googleSheetURL": "https://script.google.com/macros/s/AKfycbwjmFgI2ZE1Sw81eMrfTh-pfsmUz7T_SlDWhYCBh7abslC-Q4DyLnceZc-Kl8y4pcCJSQ/exec",
